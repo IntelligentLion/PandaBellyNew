@@ -37,16 +37,18 @@ public class Main {
         panel.setBounds(175,50,200,50);
         frame.add(panel);
 
+        
+
+        JPanel itemPanel = new JPanel();
+        itemPanel.setBorder(BorderFactory.createEtchedBorder());
+        itemPanel.setBounds(150, 100, 175, 100);
+        frame.add(itemPanel);
+
         JPanel bigPanel = new JPanel();
         bigPanel.setBounds(150, 100, 700, 550);
         frame.add(bigPanel);
         bigPanel.setBorder(BorderFactory.createEtchedBorder());
         bigPanel.setBackground(java.awt.Color.PINK);
-
-        JPanel itemPanel = new JPanel();
-        itemPanel.setSize(175, 100);
-        itemPanel.setBorder(BorderFactory.createEtchedBorder());
-        bigPanel.add(itemPanel);
         
         itemPanel.setBackground(java.awt.Color.WHITE);
 
