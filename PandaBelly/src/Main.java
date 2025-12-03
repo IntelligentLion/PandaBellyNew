@@ -7,8 +7,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.Color;
-import javax.swing.BorderFactory;
-
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -108,7 +106,7 @@ public class Main {
         JFrame addItemFrame = new JFrame("Add Item");
         addItemFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         addItemFrame.setSize(300, 400);
-        addItemFrame.setLayout(new GridLayout(4, 2));
+        addItemFrame.setLayout(new GridLayout(5, 2));
 
         JLabel CategoryLabel = new JLabel("Category:");
         JTextField CategoryField = new JTextField();
@@ -130,6 +128,37 @@ public class Main {
         addItemFrame.add(quantityLabel);
         addItemFrame.add(quantityField);
 
+        JButton submitButton = new JButton("Submit");
+        addItemFrame.add(submitButton);
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (CategoryField.getText().isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                        CategoryField.requestFocusInWindow();
+                    }
+                else if (nameField.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    nameField.requestFocusInWindow();
+                }
+                else if (priceField.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    priceField.requestFocusInWindow();
+                }
+                else if (quantityField.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    quantityField.requestFocusInWindow();
+                }
+                else {
+                    CategoryField.setText("");
+                    nameField.setText("");
+                    priceField.setText("");
+                    quantityField.setText("");
+                    addItemFrame.setVisible(false);
+                }
+            }
+        });
+
 
 
         JButton addItemButton = new JButton("Add Item");
@@ -142,7 +171,15 @@ public class Main {
             public void actionPerformed(ActionEvent e) {
                 // Code to add item goes here
                 addItemFrame.setVisible(true);
-            }
+                if(submitButton.isFocusOwner()){
+                    
+                    
+                    
+                    // Storage x = new Storage(CategoryField.getText());
+                    // x.addItem(nameField.getText(), Double.parseDouble(priceField.getText()), Integer.parseInt(quantityField.getText()));
+                    // storage.addCategory(x);
+                }
+            }   
         });
 
         frame.setVisible(true);
