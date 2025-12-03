@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.Color;
 import javax.swing.BorderFactory;
@@ -18,6 +19,8 @@ import java.awt.event.ActionListener;
 
 public class Main {
     public static void main(String[] args) {
+        categoryStorage storage = new categoryStorage();
+
         JFrame frame = new JFrame("PandaBelly");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
@@ -75,6 +78,7 @@ public class Main {
                 }
                 if (selectedCategory != null && !selectedCategory.trim().isEmpty()) {
                     dropdown.removeItem(selectedCategory.trim());
+                    storage.removeCategory(selectedCategory.trim());
                     // Here you would also add code to save the removed category to a file
                 }
             }
@@ -93,12 +97,29 @@ public class Main {
                 String newCategory = JOptionPane.showInputDialog(frame, "Enter new category name:");
                 if (newCategory != null && !newCategory.trim().isEmpty()) {
                     dropdown.addItem(newCategory.trim());
+                    storage.addCategory(new Storage(newCategory.trim()));
                     // Here you would also add code to save the new category to a file
                 }
             }
         });
 
-
+        JFrame addItemFrame = new JFrame("Add Item");
+        addItemFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        addItemFrame.setSize(300, 400);
+        addItemFrame.setLayout(new GridLayout(5, 2));
+        
+        JButton addItemButton = new JButton("Add Item");
+        JPanel addItemPanel = new JPanel();
+        addItemPanel.setBounds(175, 10, 200, 50);
+        addItemPanel.add(addItemButton);
+        frame.add(addItemPanel);
+        addItemButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Code to add item goes here
+                JOptionPane.showInputDialog(frame, "");
+            }
+        });
 
         frame.setVisible(true);
        

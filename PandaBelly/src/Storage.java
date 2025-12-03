@@ -19,18 +19,7 @@ public class Storage {
         }
         return false;
     }
-    //removes an item from the category based on its index
-    public boolean removeItem(int index){
-        if(index<=category.size()&&index>=0){
-            for (int i=0; i<category.size(); i++){
-                if(i==index){
-                    category.remove(i);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+
     //Adds an item to the category
     public boolean addItem(String n, double p, int q, String s){
         for(Item y:category){
