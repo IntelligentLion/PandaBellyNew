@@ -10,7 +10,7 @@ public class Item {
         quantity=q;
         SKU=s;
     }
-    //accessors
+    //accessors y
     public String getName(){
         return name;
     }
