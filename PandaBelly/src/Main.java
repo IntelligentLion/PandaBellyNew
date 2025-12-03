@@ -107,7 +107,27 @@ public class Main {
         addItemFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         addItemFrame.setSize(300, 400);
         addItemFrame.setLayout(new GridLayout(5, 2));
-        
+
+        JLabel nameLabel = new JLabel("Name:");
+        JTextField nameField = new JTextField();
+        addItemFrame.add(nameLabel);
+        addItemFrame.add(nameField);
+
+        JLabel priceLabel = new JLabel("Price:");
+        JTextField priceField = new JTextField();
+        addItemFrame.add(priceLabel);
+        addItemFrame.add(priceField);
+
+        JLabel quantityLabel = new JLabel("Quantity:");
+        JTextField quantityField = new JTextField();
+        addItemFrame.add(quantityLabel);
+        addItemFrame.add(quantityField);
+
+        JLabel skuLabel = new JLabel("SKU:");
+        JTextField skuField = new JTextField();
+        addItemFrame.add(skuLabel);
+        addItemFrame.add(skuField);
+
         JButton addItemButton = new JButton("Add Item");
         JPanel addItemPanel = new JPanel();
         addItemPanel.setBounds(175, 10, 200, 50);
@@ -117,7 +137,7 @@ public class Main {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Code to add item goes here
-                JOptionPane.showInputDialog(frame, "");
+                addItemFrame.setVisible(true);
             }
         });
 
