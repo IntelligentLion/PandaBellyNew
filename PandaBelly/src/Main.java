@@ -108,7 +108,12 @@ public class Main {
         JFrame addItemFrame = new JFrame("Add Item");
         addItemFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         addItemFrame.setSize(300, 400);
-        addItemFrame.setLayout(new GridLayout(5, 2));
+        addItemFrame.setLayout(new GridLayout(4, 2));
+
+        JLabel CategoryLabel = new JLabel("Category:");
+        JTextField CategoryField = new JTextField();
+        addItemFrame.add(CategoryLabel);
+        addItemFrame.add(CategoryField);
 
         JLabel nameLabel = new JLabel("Name:");
         JTextField nameField = new JTextField();
@@ -125,10 +130,7 @@ public class Main {
         addItemFrame.add(quantityLabel);
         addItemFrame.add(quantityField);
 
-        JLabel skuLabel = new JLabel("SKU:");
-        JTextField skuField = new JTextField();
-        addItemFrame.add(skuLabel);
-        addItemFrame.add(skuField);
+
 
         JButton addItemButton = new JButton("Add Item");
         JPanel addItemPanel = new JPanel();
