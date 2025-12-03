@@ -21,24 +21,23 @@ public class Storage {
     }
 
     //Adds an item to the category
-    public boolean addItem(String n, double p, int q, String s){
+    public boolean addItem(String n, double p, int q){
         for(Item y:category){
             if(y.getName().equals(n)){
                 return false;
             }
         }
-        category.add(new Item(n,p,q,s));
+        category.add(new Item(n,p,q));
         
         return true;
     }
 
-    public boolean modifyItem(String n, String newName, double p, int q, String s){
+    public boolean modifyItem(String n, String newName, double p, int q){
         for(Item y:category){
             if(y.getName().equals(n)){
                 y.setName(newName);
                 y.setPrice(p);
                 y.setQuantity(q);
-                y.setSKU(s);
                 return true;
             }
         }

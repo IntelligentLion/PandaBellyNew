@@ -2,13 +2,13 @@ public class Item {
     private String name;
     private double price;
     private int quantity;
-    private String SKU;
 
-    public Item(String n, double p, int q, String s){
+
+    public Item(String n, double p, int q){
         name=n;
         price=p;
         quantity=q;
-        SKU=s;
+
     }
     //accessors y
     public String getName(){
@@ -20,9 +20,7 @@ public class Item {
     public int getQuantity(){
         return quantity;
     }
-    public String getSKU(){
-        return SKU;
-    }
+
 
     //setters
     public void setName(String n){
@@ -34,7 +32,5 @@ public class Item {
     public void setQuantity(int q){
         quantity=q;
     }
-    public void setSKU(String s){
-        SKU=s;
-    }
+
 }
