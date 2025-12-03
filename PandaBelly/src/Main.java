@@ -41,6 +41,11 @@ public class Main {
         itemPanel.setBorder(BorderFactory.createEtchedBorder());
         itemPanel.setBounds(150, 100, 175, 100);
         frame.add(itemPanel);
+        itemPanel.setLayout(new BorderLayout());
++       JLabel itemLabel = new JLabel("Items", SwingConstants.CENTER);
++       itemPanel.add(itemLabel, BorderLayout.CENTER);
+
+
 
         JPanel bigPanel = new JPanel();
         bigPanel.setBounds(150, 100, 700, 550);
