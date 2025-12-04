@@ -42,8 +42,9 @@ public class Main {
         itemPanel.setBounds(150, 100, 175, 100);
         frame.add(itemPanel);
         itemPanel.setLayout(new BorderLayout());
-+       JLabel itemLabel = new JLabel("Items", SwingConstants.CENTER);
-+       itemPanel.add(itemLabel, BorderLayout.CENTER);
+        JLabel itemLabel = new JLabel("Items", SwingConstants.CENTER);
+        itemLabel.setSize(100, 80);
+        itemPanel.add(itemLabel, BorderLayout.CENTER);
 
 
 
