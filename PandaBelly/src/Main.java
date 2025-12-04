@@ -7,7 +7,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.Color;
-
+import java.awt.BorderLayout;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -45,6 +45,36 @@ public class Main {
         JLabel itemLabel = new JLabel("Items", SwingConstants.CENTER);
         itemLabel.setSize(100, 80);
         itemPanel.add(itemLabel, BorderLayout.CENTER);
+
+        JPanel pricePanel = new JPanel();
+        pricePanel.setBorder(BorderFactory.createEtchedBorder());
+        pricePanel.setBounds(500, 100, 175, 100);
+        frame.add(pricePanel);
+        pricePanel.setLayout(new BorderLayout());
+        JLabel priceLabel1 = new JLabel("Price", SwingConstants.CENTER);
+        priceLabel1.setSize(100, 80);
+        pricePanel.add(priceLabel1, BorderLayout.CENTER);
+        pricePanel.setBackground(java.awt.Color.WHITE);
+
+        JPanel quantPanel = new JPanel();
+        quantPanel.setBorder(BorderFactory.createEtchedBorder());
+        quantPanel.setBounds(325, 100, 175, 100);
+        frame.add(quantPanel);
+        quantPanel.setLayout(new BorderLayout());
+        JLabel quantLabel1 = new JLabel("Quantity", SwingConstants.CENTER);
+        quantLabel1.setSize(100, 80);
+        quantPanel.add(quantLabel1, BorderLayout.CENTER);
+        quantPanel.setBackground(java.awt.Color.WHITE);
+
+        JPanel SKUPanel = new JPanel();
+        SKUPanel.setBorder(BorderFactory.createEtchedBorder());
+        SKUPanel.setBounds(325, 100, 175, 100);
+        frame.add(SKUPanel);
+        SKUPanel.setLayout(new BorderLayout());
+        JLabel SKULabel1 = new JLabel("SKU", SwingConstants.CENTER);
+        SKULabel1.setSize(100, 80);
+        SKUPanel.add(SKULabel1, BorderLayout.CENTER);
+        SKUPanel.setBackground(java.awt.Color.WHITE);
 
 
 
