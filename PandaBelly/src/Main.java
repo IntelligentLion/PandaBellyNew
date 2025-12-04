@@ -252,6 +252,23 @@ public class Main {
        
 
 
+
+
+
+        
+         String[] columnNames = {"Items", "Quantity", "Price"};
+
+        // Create a DefaultTableModel and JTable
+        DefaultTableModel model = new DefaultTableModel(mainStorage, columnNames);
+        JTable table = new JTable(model);
+        table.setRowHeight(30);
+
+        // Wrap the table in a JScrollPane to display headers and enable scrolling
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        // Add the scroll pane to the frame's content pane
+        frame.add(scrollPane, BorderLayout.CENTER);
+
     }
     /*Arthur: For the file stuff, we can use special characters to act as keys to separate different items and stuff
     for example, we can use %% or something to separate items, and categories by &&
