@@ -12,6 +12,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.UIManager;
 import javax.swing.ImageIcon;
+import java.awt.Font;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +21,11 @@ import java.awt.event.ActionListener;
 public class Main {
     public static void main(String[] args) {
         categoryStorage storage = new categoryStorage();
+
+        UIManager.put("Label.font", new Font("Chaucer", Font.PLAIN, 25));
+
+        UIManager.put("OptionPane.background", Color.LIGHT_GRAY);
+        UIManager.put("Panel.background", Color.LIGHT_GRAY);
 
         JFrame frame = new JFrame("PandaBelly");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -41,7 +47,7 @@ public class Main {
 
         JPanel itemPanel = new JPanel();
         itemPanel.setBorder(BorderFactory.createEtchedBorder());
-        itemPanel.setBounds(150, 100, 175, 100);
+        itemPanel.setBounds(150, 100, 700/3, 100);
         frame.add(itemPanel);
         itemPanel.setLayout(new BorderLayout());
         JLabel itemLabel = new JLabel("Items", SwingConstants.CENTER);
@@ -50,7 +56,7 @@ public class Main {
 
         JPanel pricePanel = new JPanel();
         pricePanel.setBorder(BorderFactory.createEtchedBorder());
-        pricePanel.setBounds(550, 100, 175, 100);
+        pricePanel.setBounds(150+1400/3, 100, 700/3, 100);
         frame.add(pricePanel);
         pricePanel.setLayout(new BorderLayout());
         JLabel priceLabel1 = new JLabel("Price", SwingConstants.CENTER);
@@ -60,7 +66,7 @@ public class Main {
 
         JPanel quantPanel = new JPanel();
         quantPanel.setBorder(BorderFactory.createEtchedBorder());
-        quantPanel.setBounds(350, 100, 175, 100);
+        quantPanel.setBounds(150+700/3, 100, 700/3, 100);
         frame.add(quantPanel);
         quantPanel.setLayout(new BorderLayout());
         JLabel quantLabel1 = new JLabel("Quantity", SwingConstants.CENTER);
@@ -106,6 +112,17 @@ public class Main {
         removeButtonPanel.setBounds(575,50,200,50);
         removeButtonPanel.add(removeCategoryButton);
         frame.add(removeButtonPanel);
+        removeCategoryButton.setContentAreaFilled(false);
+        removeCategoryButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                removeCategoryButton.setContentAreaFilled(true);
+                removeCategoryButton.setBackground(new Color(255, 100, 100));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                removeCategoryButton.setContentAreaFilled(false);
+            }
+        });
         removeCategoryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -138,6 +155,17 @@ public class Main {
                     storage.addCategory(new Storage(newCategory.trim()));
                     // Here you would also add code to save the new category to a file
                 }
+            }
+        });
+        addcategory.setContentAreaFilled(false);
+        addcategory.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                addcategory.setContentAreaFilled(true);
+                addcategory.setBackground(new Color(255, 100, 100));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addcategory.setContentAreaFilled(false);
             }
         });
 
