@@ -224,6 +224,17 @@ public class Main {
                 }
             }
         });
+        submitButton.setContentAreaFilled(false);
+        submitButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                submitButton.setContentAreaFilled(true);
+                submitButton.setBackground(new Color(255, 100, 100));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                submitButton.setContentAreaFilled(false);
+            }
+        });
 
 
 
@@ -246,6 +257,17 @@ public class Main {
                     // storage.addCategory(x);
                 }
             }   
+        });
+        addItemButton.setContentAreaFilled(false);
+        addItemButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                addItemButton.setContentAreaFilled(true);
+                addItemButton.setBackground(new Color(255, 100, 100));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addItemButton.setContentAreaFilled(false);
+            }
         });
 
        
