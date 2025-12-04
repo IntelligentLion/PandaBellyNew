@@ -68,7 +68,7 @@ public class Main {
 
         JPanel SKUPanel = new JPanel();
         SKUPanel.setBorder(BorderFactory.createEtchedBorder());
-        SKUPanel.setBounds(325, 100, 175, 100);
+        SKUPanel.setBounds(675, 100, 175, 100);
         frame.add(SKUPanel);
         SKUPanel.setLayout(new BorderLayout());
         JLabel SKULabel1 = new JLabel("SKU", SwingConstants.CENTER);
