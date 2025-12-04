@@ -87,7 +87,7 @@ public class Main {
 
 
         JPanel bigPanel = new JPanel();
-        bigPanel.setBounds(150, 100, 700, 550);
+        bigPanel.setBounds(150, 200, 700, 450);
         frame.add(bigPanel);
         bigPanel.setBorder(BorderFactory.createEtchedBorder());
         bigPanel.setBackground(java.awt.Color.PINK);
@@ -248,7 +248,7 @@ public class Main {
             }   
         });
 
-        frame.setVisible(true);
+       
        
 
 
@@ -256,19 +256,28 @@ public class Main {
 
 
         
-         String[] columnNames = {"Items", "Quantity", "Price"};
+        String[] columnNames = {"Items", "Quantity", "Price"};
 
         // Create a DefaultTableModel and JTable
-        DefaultTableModel model = new DefaultTableModel(mainStorage, columnNames);
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+        
+        // Add example data
+        model.addRow(new Object[]{"Bamboo", 5, "$12.99"});
+        model.addRow(new Object[]{"Panda Food", 10, "$8.50"});
+        model.addRow(new Object[]{"Bamboo Shoots", 8, "$15.00"});
+        model.addRow(new Object[]{"Leaves", 20, "$3.25"});
+        
         JTable table = new JTable(model);
         table.setRowHeight(30);
 
         // Wrap the table in a JScrollPane to display headers and enable scrolling
         JScrollPane scrollPane = new JScrollPane(table);
-
-        // Add the scroll pane to the frame's content pane
-        frame.add(scrollPane, BorderLayout.CENTER);
-
+        
+        // Add the scroll pane to the bigPanel instead
+        bigPanel.setLayout(new BorderLayout());
+        bigPanel.add(scrollPane, BorderLayout.CENTER);
+        
+        frame.setVisible(true);
     }
     /*Arthur: For the file stuff, we can use special characters to act as keys to separate different items and stuff
     for example, we can use %% or something to separate items, and categories by &&
