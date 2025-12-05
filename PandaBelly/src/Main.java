@@ -10,8 +10,7 @@ import java.awt.Color;
 import java.awt.BorderLayout;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.UIManager;
-import javax.swing.ImageIcon;
+
 import java.awt.Font;
 
 import java.awt.event.ActionEvent;
@@ -215,6 +214,23 @@ public class Main {
                     JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     quantityField.requestFocusInWindow();
                 }
+                else if(priceField.getText().matches(".*[a-zA-Z]+.*") || Double.parseDouble(priceField.getText()) < 0){
+                    if(priceField.getText().contains(".")){
+                        String[] parts = priceField.getText().split("\\.");
+                        if(parts.length == 2 && parts[1].length() > 2){
+                            JOptionPane.showMessageDialog(null, "Price can only have two decimal places!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                            priceField.requestFocusInWindow();
+                            return;
+                        }
+                    }
+                    JOptionPane.showMessageDialog(null, "Enter valid price!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    priceField.requestFocusInWindow();
+                }
+                else if(quantityField.getText().matches(".*[a-zA-Z]+.*") || quantityField.getText().contains(".") || Integer.parseInt(quantityField.getText()) < 0){
+                    JOptionPane.showMessageDialog(null, "Enter valid quantity!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    quantityField.requestFocusInWindow();
+                }
+
                 else {
                     CategoryField.setText("");
                     nameField.setText("");
