@@ -310,6 +310,44 @@ public class Main {
             }
         });
 
+        JButton removeItemButton = new JButton("Remove Item");
+        JPanel removeItemPanel = new JPanel();
+        removeItemPanel.setBounds(550, 10, 200, 50);
+        removeItemPanel.add(removeItemButton);
+        frame.add(removeItemPanel);
+        removeItemButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Code to remove item goes here
+                String itemName = JOptionPane.showInputDialog(frame, "Enter item name to remove:");
+                if (itemName != null && !itemName.trim().isEmpty()) {
+                    boolean itemFound = false;
+                    for (Storage storageUnit : storage.getMainStorage()) {
+                        if (storageUnit.removeItem(itemName.trim())) {
+                            itemFound = true;
+                            break;
+                        }
+                    }
+                    if (itemFound) {
+                        JOptionPane.showMessageDialog(frame, "Item '" + itemName + "' removed successfully.");
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "Item '" + itemName + "' not found.");
+                    }
+                }
+            }   
+        });
+        removeItemButton.setContentAreaFilled(false);
+        removeItemButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                removeItemButton.setContentAreaFilled(true);
+                removeItemButton.setBackground(new Color(255, 100, 100));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                removeItemButton.setContentAreaFilled(false);
+            }
+        });
+
        
        
 
