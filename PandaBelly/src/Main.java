@@ -10,7 +10,14 @@ import java.awt.Color;
 import java.awt.BorderLayout;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-
+import java.awt.GradientPaint;
+import java.awt.event.MouseEvent;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.geom.Point2D;
+import java.awt.RadialGradientPaint;
+import java.awt.event.MouseAdapter;
 import java.awt.Font;
 
 import java.awt.event.ActionEvent;
@@ -22,10 +29,7 @@ public class Main {
         categoryStorage storage = new categoryStorage();
 
         UIManager.put("Label.font", new Font("Chaucer", Font.PLAIN, 25));
-
-        UIManager.put("OptionPane.background", Color.LIGHT_GRAY);
-        UIManager.put("Panel.background", Color.LIGHT_GRAY);
-
+ 
         JFrame frame = new JFrame("PandaBelly");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
@@ -33,6 +37,7 @@ public class Main {
         frame.setSize(1000,700);
         frame.setLocationRelativeTo(null); // Center the frame
         frame.setBackground(java.awt.Color.BLUE);
+        frame.setIconImage(new ImageIcon("cherry.gif").getImage());
         
         String[] options = {"None"};
         JComboBox<String> dropdown = new JComboBox<>(options);
@@ -41,6 +46,7 @@ public class Main {
         panel.add(dropdown);
         panel.setBounds(175,50,200,50);
         frame.add(panel);
+        panel.setOpaque(true);
 
         
 
@@ -89,9 +95,12 @@ public class Main {
         bigPanel.setBounds(150, 200, 700, 450);
         frame.add(bigPanel);
         bigPanel.setBorder(BorderFactory.createEtchedBorder());
-        bigPanel.setBackground(java.awt.Color.PINK);
+        bigPanel.setOpaque(false); // show animated background behind the table
+         
+         itemPanel.setBackground(java.awt.Color.WHITE);
+        // make button-holder panels transparent so the gradient is visible
+        // (repeat for other small panels if desired)
         
-        itemPanel.setBackground(java.awt.Color.WHITE);
 
 
         /* 
@@ -378,7 +387,11 @@ public class Main {
         bigPanel.add(scrollPane, BorderLayout.CENTER);
         
         frame.setVisible(true);
+    
     }
+
+
+
     /*Arthur: For the file stuff, we can use special characters to act as keys to separate different items and stuff
     for example, we can use %% or something to separate items, and categories by &&
     so maybe the first line of the txt is just a list of categories like balls&&cubes&&blahblah
@@ -394,5 +407,5 @@ public class Main {
     //     writer.newLine();
         
     // }
-
 }
+    
