@@ -183,7 +183,7 @@ public class Main {
         addItemFrame.add(nameLabel);
         addItemFrame.add(nameField);
 
-        JLabel priceLabel = new JLabel("Price:");
+        JLabel priceLabel = new JLabel("Price:         $");
         JTextField priceField = new JTextField();
         addItemFrame.add(priceLabel);
         addItemFrame.add(priceField);
