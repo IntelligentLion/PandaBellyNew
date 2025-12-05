@@ -110,7 +110,6 @@ public class Main {
         JPanel removeButtonPanel = new JPanel();
         removeButtonPanel.setBounds(575,50,200,50);
         removeButtonPanel.add(removeCategoryButton);
-        removeCategoryButton.setBorder(BorderFactory.createEtchedBorder());
         frame.add(removeButtonPanel);
         removeCategoryButton.setContentAreaFilled(false);
         removeCategoryButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -145,7 +144,6 @@ public class Main {
         JPanel addcategoryPanel = new JPanel();
         addcategoryPanel.setBounds(400,50,200,50);
         addcategoryPanel.add(addcategory);
-        addcategory.setBorder(BorderFactory.createEtchedBorder());
         frame.add(addcategoryPanel);
         addcategory.addActionListener(new ActionListener() {
             @Override
@@ -292,7 +290,6 @@ public class Main {
         JPanel addItemPanel = new JPanel();
         addItemPanel.setBounds(175, 10, 200, 50);
         addItemPanel.add(addItemButton);
-        addItemButton.setBorder(BorderFactory.createEtchedBorder());
         frame.add(addItemPanel);
         addItemButton.addActionListener(new ActionListener() {
             @Override
