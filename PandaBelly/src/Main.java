@@ -20,6 +20,10 @@ import java.awt.event.ActionListener;
 public class Main {
     public static void main(String[] args) {
         categoryStorage storage = new categoryStorage();
+        String[] columnNames = {"Items", "Quantity", "Price"};
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+        JTable table = new JTable(model);
+        table.setRowHeight(30);
 
         UIManager.put("Label.font", new Font("Chaucer", Font.PLAIN, 25));
 
@@ -133,6 +137,7 @@ public class Main {
                 if (selectedCategory != null && !selectedCategory.trim().isEmpty()) {
                     dropdown.removeItem(selectedCategory.trim());
                     storage.removeCategory(selectedCategory.trim());
+                    Main.updateTableForSelectedCategory(dropdown, storage, model);
                     // Here you would also add code to save the removed category to a file
                 }
             }
@@ -269,6 +274,8 @@ public class Main {
                     priceField.setText("");
                     quantityField.setText("");
                     addItemFrame.setVisible(false);
+                    dropdown.setSelectedItem(CategoryField.getText());
+                    Main.updateTableForSelectedCategory(dropdown, storage, model);
                 }
             }
         });
@@ -311,6 +318,58 @@ public class Main {
         });
 
         JButton removeItemButton = new JButton("Remove Item");
+        JFrame removeItemFrame = new JFrame("Remove Item");
+        removeItemFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
+        removeItemFrame.setSize(300, 200);
+        removeItemFrame.setLayout(new GridLayout(3, 2));
+        removeItemFrame.setVisible(false);
+        JLabel removeCategoryLabel = new JLabel("Category Name:");
+        JTextField removeCategoryField = new JTextField();
+        removeItemFrame.add(removeCategoryLabel);
+        removeItemFrame.add(removeCategoryField);
+
+        JLabel removeItemLabel = new JLabel("Item Name:");
+        JTextField removeItemField = new JTextField();
+        removeItemFrame.add(removeItemLabel);
+        removeItemFrame.add(removeItemField);
+        JButton submitRemoveItemButton = new JButton("Submit");
+        removeItemFrame.add(submitRemoveItemButton);
+        submitRemoveItemButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (removeCategoryField.getText().isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                        removeCategoryField.requestFocusInWindow();
+                    }
+                else if (removeItemField.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    removeItemField.requestFocusInWindow();
+                }
+                else {
+                    String categoryName = removeCategoryField.getText();
+                    String itemName = removeItemField.getText();
+                    Storage selectedStorage = null;
+                    for (int i = 0; i < storage.getMainStorage().size(); i++) {
+                        if (storage.getMainStorage().get(i).getCName().equals(categoryName)) {
+                            selectedStorage = storage.getMainStorage().get(i);
+                            break;
+                        }
+                    }
+                    if (selectedStorage != null && selectedStorage.removeItem(itemName)) {
+                        JOptionPane.showMessageDialog(null, "Item removed successfully!");
+                        removeCategoryField.setText("");
+                        removeItemField.setText("");
+                        removeItemFrame.setVisible(false);
+                        dropdown.setSelectedItem(categoryName);
+                        Main.updateTableForSelectedCategory(dropdown, storage, model);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Item not found in the specified category!", "Error", JOptionPane.ERROR_MESSAGE);
+                        removeItemField.requestFocusInWindow();
+                    }
+                }
+            }   
+        });
+
         JPanel removeItemPanel = new JPanel();
         removeItemPanel.setBounds(550, 10, 200, 50);
         removeItemPanel.add(removeItemButton);
@@ -319,21 +378,7 @@ public class Main {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Code to remove item goes here
-                String itemName = JOptionPane.showInputDialog(frame, "Enter item name to remove:");
-                if (itemName != null && !itemName.trim().isEmpty()) {
-                    boolean itemFound = false;
-                    for (Storage storageUnit : storage.getMainStorage()) {
-                        if (storageUnit.removeItem(itemName.trim())) {
-                            itemFound = true;
-                            break;
-                        }
-                    }
-                    if (itemFound) {
-                        JOptionPane.showMessageDialog(frame, "Item '" + itemName + "' removed successfully.");
-                    } else {
-                        JOptionPane.showMessageDialog(frame, "Item '" + itemName + "' not found.");
-                    }
-                }
+                removeItemFrame.setVisible(true);
             }   
         });
         removeItemButton.setContentAreaFilled(false);
@@ -356,10 +401,10 @@ public class Main {
 
 
         
-        String[] columnNames = {"Items", "Quantity", "Price"};
+
 
         // Create a DefaultTableModel and JTable
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+        
         
         // Add example data
         model.addRow(new Object[]{"Bamboo", 5, "$12.99"});
@@ -367,8 +412,7 @@ public class Main {
         model.addRow(new Object[]{"Bamboo Shoots", 8, "$15.00"});
         model.addRow(new Object[]{"Leaves", 20, "$3.25"});
         
-        JTable table = new JTable(model);
-        table.setRowHeight(30);
+        
 
         // Wrap the table in a JScrollPane to display headers and enable scrolling
         JScrollPane scrollPane = new JScrollPane(table);
@@ -376,9 +420,55 @@ public class Main {
         // Add the scroll pane to the bigPanel instead
         bigPanel.setLayout(new BorderLayout());
         bigPanel.add(scrollPane, BorderLayout.CENTER);
+
+        dropdown.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedCategory = (String) dropdown.getSelectedItem();
+                // Update the table based on the selected category
+                // For demonstration, we'll just clear and add example data
+                model.setRowCount(0); // Clear existing rows
+                
+                // Here you would fetch and add items based on the selected category
+                if (selectedCategory.equals("None")) {
+                    model.addRow(new Object[]{"No items available", "", ""});
+                } else {
+                    for(Storage storageUnit : storage.getMainStorage()) {
+                        if (storageUnit.getCName().equals(selectedCategory)) {
+                            for (Item item : storageUnit.getCategory()) {
+                                model.addRow(new Object[]{item.getName(), item.getQuantity(), "$" + String.format("%.2f", item.getPrice())});
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+        });
         
         frame.setVisible(true);
     }
+
+    private static void updateTableForSelectedCategory(JComboBox<String> dropdown, categoryStorage storage, DefaultTableModel model) {
+        String selectedCategory = (String) dropdown.getSelectedItem();
+                // Update the table based on the selected category
+                // For demonstration, we'll just clear and add example data
+                model.setRowCount(0); // Clear existing rows
+                
+                // Here you would fetch and add items based on the selected category
+                if (selectedCategory.equals("None")) {
+                    model.addRow(new Object[]{"No items available", "", ""});
+                } else {
+                    for(Storage storageUnit : storage.getMainStorage()) {
+                        if (storageUnit.getCName().equals(selectedCategory)) {
+                            for (Item item : storageUnit.getCategory()) {
+                                model.addRow(new Object[]{item.getName(), item.getQuantity(), "$" + String.format("%.2f", item.getPrice())});
+                            }
+                            break;
+                        }
+                    }
+                }
+    }
+
     /*Arthur: For the file stuff, we can use special characters to act as keys to separate different items and stuff
     for example, we can use %% or something to separate items, and categories by &&
     so maybe the first line of the txt is just a list of categories like balls&&cubes&&blahblah

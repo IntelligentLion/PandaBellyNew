@@ -48,5 +48,9 @@ public class Storage {
         return categoryName;
     }
 
+    public ArrayList<Item> getCategory() {
+        return category;
+    }
+
     
 }
