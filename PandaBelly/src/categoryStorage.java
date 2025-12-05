@@ -25,6 +25,18 @@ public class categoryStorage{
         }
         return false;
     }
+    public boolean categoryExists(String n){
+        for(Storage y: mainStorage){
+            if(y.getCName().equals(n)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public java.util.ArrayList<Storage> getMainStorage() {
+        return mainStorage;
+    }
 
 
 }

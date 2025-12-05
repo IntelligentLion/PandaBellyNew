@@ -10,8 +10,7 @@ import java.awt.Color;
 import java.awt.BorderLayout;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.UIManager;
-import javax.swing.ImageIcon;
+
 import java.awt.Font;
 
 import java.awt.event.ActionEvent;
@@ -184,7 +183,7 @@ public class Main {
         addItemFrame.add(nameLabel);
         addItemFrame.add(nameField);
 
-        JLabel priceLabel = new JLabel("Price:");
+        JLabel priceLabel = new JLabel("Price:         $");
         JTextField priceField = new JTextField();
         addItemFrame.add(priceLabel);
         addItemFrame.add(priceField);
@@ -215,7 +214,56 @@ public class Main {
                     JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     quantityField.requestFocusInWindow();
                 }
+                //exceptions
+                try {
+                    Double.parseDouble(priceField.getText());
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Enter valid price!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    priceField.requestFocusInWindow();
+                    return;
+                }
+                if(Double.parseDouble(priceField.getText()) < 0){
+                    JOptionPane.showMessageDialog(null, "Price cannot be negative!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    priceField.requestFocusInWindow();
+                    return;
+                }
+                if(priceField.getText().contains(".")){
+                    String[] parts = priceField.getText().split("\\.");
+                    if(parts.length == 2 && parts[1].length() > 2){
+                        JOptionPane.showMessageDialog(null, "Price can only have two decimal places!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                        priceField.requestFocusInWindow();
+                        return;
+                    }
+                }
+                try {
+                    Integer.parseInt(quantityField.getText());
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Enter valid quantity!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    quantityField.requestFocusInWindow();
+                    return;
+                }
+                if(Integer.parseInt(quantityField.getText()) < 0){
+                    JOptionPane.showMessageDialog(null, "Quantity cannot be negative!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    quantityField.requestFocusInWindow();
+                    return;
+                }
+                
+                if (!storage.categoryExists(CategoryField.getText())) {
+                    JOptionPane.showMessageDialog(null, "Category does not exist!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    CategoryField.requestFocusInWindow();
+                    return;
+                }
+
                 else {
+                    Storage selectedStorage = null;
+                    for (int i = 0; i < storage.getMainStorage().size(); i++) {
+                        if (storage.getMainStorage().get(i).getCName().equals(CategoryField.getText())) {
+                            selectedStorage = storage.getMainStorage().get(i);
+                            break;
+                        }
+                    }
+                    selectedStorage.addItem(nameField.getText(), Double.parseDouble(priceField.getText()), Integer.parseInt(quantityField.getText()));
+                    JOptionPane.showMessageDialog(null, "Item added successfully!");
                     CategoryField.setText("");
                     nameField.setText("");
                     priceField.setText("");
@@ -248,14 +296,6 @@ public class Main {
             public void actionPerformed(ActionEvent e) {
                 // Code to add item goes here
                 addItemFrame.setVisible(true);
-                if(submitButton.isFocusOwner()){
-                    
-                    
-                    
-                    // Storage x = new Storage(CategoryField.getText());
-                    // x.addItem(nameField.getText(), Double.parseDouble(priceField.getText()), Integer.parseInt(quantityField.getText()));
-                    // storage.addCategory(x);
-                }
             }   
         });
         addItemButton.setContentAreaFilled(false);
@@ -267,6 +307,44 @@ public class Main {
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 addItemButton.setContentAreaFilled(false);
+            }
+        });
+
+        JButton removeItemButton = new JButton("Remove Item");
+        JPanel removeItemPanel = new JPanel();
+        removeItemPanel.setBounds(550, 10, 200, 50);
+        removeItemPanel.add(removeItemButton);
+        frame.add(removeItemPanel);
+        removeItemButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Code to remove item goes here
+                String itemName = JOptionPane.showInputDialog(frame, "Enter item name to remove:");
+                if (itemName != null && !itemName.trim().isEmpty()) {
+                    boolean itemFound = false;
+                    for (Storage storageUnit : storage.getMainStorage()) {
+                        if (storageUnit.removeItem(itemName.trim())) {
+                            itemFound = true;
+                            break;
+                        }
+                    }
+                    if (itemFound) {
+                        JOptionPane.showMessageDialog(frame, "Item '" + itemName + "' removed successfully.");
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "Item '" + itemName + "' not found.");
+                    }
+                }
+            }   
+        });
+        removeItemButton.setContentAreaFilled(false);
+        removeItemButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                removeItemButton.setContentAreaFilled(true);
+                removeItemButton.setBackground(new Color(255, 100, 100));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                removeItemButton.setContentAreaFilled(false);
             }
         });
 
