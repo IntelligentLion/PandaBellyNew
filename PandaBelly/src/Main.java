@@ -214,22 +214,74 @@ public class Main {
                     JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     quantityField.requestFocusInWindow();
                 }
-                else if(priceField.getText().matches(".*[a-zA-Z]+.*") || Double.parseDouble(priceField.getText()) < 0){
-                    if(priceField.getText().contains(".")){
-                        String[] parts = priceField.getText().split("\\.");
-                        if(parts.length == 2 && parts[1].length() > 2){
-                            JOptionPane.showMessageDialog(null, "Price can only have two decimal places!", "Validation Error", JOptionPane.ERROR_MESSAGE);
-                            priceField.requestFocusInWindow();
-                            return;
-                        }
-                    }
+                //exceptions
+                try {
+                    Double.parseDouble(priceField.getText());
+                } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Enter valid price!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     priceField.requestFocusInWindow();
+                    return;
                 }
-                else if(quantityField.getText().matches(".*[a-zA-Z]+.*") || quantityField.getText().contains(".") || Integer.parseInt(quantityField.getText()) < 0){
+                if(Double.parseDouble(priceField.getText()) < 0){
+                    JOptionPane.showMessageDialog(null, "Price cannot be negative!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    priceField.requestFocusInWindow();
+                    return;
+                }
+                if(priceField.getText().contains(".")){
+                    String[] parts = priceField.getText().split("\\.");
+                    if(parts.length == 2 && parts[1].length() > 2){
+                        JOptionPane.showMessageDialog(null, "Price can only have two decimal places!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                        priceField.requestFocusInWindow();
+                        return;
+                    }
+                }
+                try {
+                    Integer.parseInt(quantityField.getText());
+                } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Enter valid quantity!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     quantityField.requestFocusInWindow();
+                    return;
                 }
+                if(Integer.parseInt(quantityField.getText()) < 0){
+                    JOptionPane.showMessageDialog(null, "Quantity cannot be negative!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    quantityField.requestFocusInWindow();
+                    return;
+                }
+                
+                if (!storage.categoryExists(CategoryField.getText())) {
+                    JOptionPane.showMessageDialog(null, "Category does not exist!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    CategoryField.requestFocusInWindow();
+                    return;
+                }
+                // else if(priceField.getText().matches(".*[a-zA-Z]+.*")){
+                //     try {
+                //         Double.parseDouble(priceField.getText());
+                //     } catch (NumberFormatException ex) {
+                //         JOptionPane.showMessageDialog(null, "Enter valid price!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                //         priceField.requestFocusInWindow();
+                //         return;
+                //     }
+                //     JOptionPane.showMessageDialog(null, "Enter valid price!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                //     priceField.requestFocusInWindow();
+                // }
+                // else if(priceField.getText().contains(".")){
+                //     String[] parts = priceField.getText().split("\\.");
+                //     if(parts.length == 2 && parts[1].length() > 2){
+                //         JOptionPane.showMessageDialog(null, "Price can only have two decimal places!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                //         priceField.requestFocusInWindow();
+                //     }
+                // }
+                // else if(quantityField.getText().matches(".*[a-zA-Z]+.*")){
+                //     try {
+                //         Integer.parseInt(quantityField.getText());
+                //     } catch (NumberFormatException ex) {
+                //         JOptionPane.showMessageDialog(null, "Enter valid quantity!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                //         quantityField.requestFocusInWindow();
+                //         return;
+                //     }
+                //     JOptionPane.showMessageDialog(null, "Enter valid quantity!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                //     quantityField.requestFocusInWindow();
+                // }
 
                 else {
                     CategoryField.setText("");
