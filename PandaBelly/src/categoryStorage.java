@@ -33,6 +33,10 @@ public class categoryStorage{
         }
         return false;
     }
+    
+    public java.util.ArrayList<Storage> getMainStorage() {
+        return mainStorage;
+    }
 
 
 }

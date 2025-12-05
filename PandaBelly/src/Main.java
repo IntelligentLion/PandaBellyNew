@@ -253,37 +253,17 @@ public class Main {
                     CategoryField.requestFocusInWindow();
                     return;
                 }
-                // else if(priceField.getText().matches(".*[a-zA-Z]+.*")){
-                //     try {
-                //         Double.parseDouble(priceField.getText());
-                //     } catch (NumberFormatException ex) {
-                //         JOptionPane.showMessageDialog(null, "Enter valid price!", "Validation Error", JOptionPane.ERROR_MESSAGE);
-                //         priceField.requestFocusInWindow();
-                //         return;
-                //     }
-                //     JOptionPane.showMessageDialog(null, "Enter valid price!", "Validation Error", JOptionPane.ERROR_MESSAGE);
-                //     priceField.requestFocusInWindow();
-                // }
-                // else if(priceField.getText().contains(".")){
-                //     String[] parts = priceField.getText().split("\\.");
-                //     if(parts.length == 2 && parts[1].length() > 2){
-                //         JOptionPane.showMessageDialog(null, "Price can only have two decimal places!", "Validation Error", JOptionPane.ERROR_MESSAGE);
-                //         priceField.requestFocusInWindow();
-                //     }
-                // }
-                // else if(quantityField.getText().matches(".*[a-zA-Z]+.*")){
-                //     try {
-                //         Integer.parseInt(quantityField.getText());
-                //     } catch (NumberFormatException ex) {
-                //         JOptionPane.showMessageDialog(null, "Enter valid quantity!", "Validation Error", JOptionPane.ERROR_MESSAGE);
-                //         quantityField.requestFocusInWindow();
-                //         return;
-                //     }
-                //     JOptionPane.showMessageDialog(null, "Enter valid quantity!", "Validation Error", JOptionPane.ERROR_MESSAGE);
-                //     quantityField.requestFocusInWindow();
-                // }
 
                 else {
+                    Storage selectedStorage = null;
+                    for (int i = 0; i < storage.getMainStorage().size(); i++) {
+                        if (storage.getMainStorage().get(i).getCName().equals(CategoryField.getText())) {
+                            selectedStorage = storage.getMainStorage().get(i);
+                            break;
+                        }
+                    }
+                    selectedStorage.addItem(nameField.getText(), Double.parseDouble(priceField.getText()), Integer.parseInt(quantityField.getText()));
+                    JOptionPane.showMessageDialog(null, "Item added successfully!");
                     CategoryField.setText("");
                     nameField.setText("");
                     priceField.setText("");
@@ -316,14 +296,6 @@ public class Main {
             public void actionPerformed(ActionEvent e) {
                 // Code to add item goes here
                 addItemFrame.setVisible(true);
-                if(submitButton.isFocusOwner()){
-                    
-                    
-                    
-                    // Storage x = new Storage(CategoryField.getText());
-                    // x.addItem(nameField.getText(), Double.parseDouble(priceField.getText()), Integer.parseInt(quantityField.getText()));
-                    // storage.addCategory(x);
-                }
             }   
         });
         addItemButton.setContentAreaFilled(false);
