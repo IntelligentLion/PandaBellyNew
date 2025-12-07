@@ -133,6 +133,7 @@ public class Main {
             public void actionPerformed(ActionEvent e) {
                 String selectedCategory = JOptionPane.showInputDialog(frame, "Enter category name to remove:");
                 if(selectedCategory.equals("None")){
+                    Sounds.playError();
                     JOptionPane.showMessageDialog(frame, "Cannot remove 'None' category.");
                     return;
                     // Exception handling
@@ -141,6 +142,7 @@ public class Main {
                     dropdown.removeItem(selectedCategory.trim());
                     storage.removeCategory(selectedCategory.trim());
                     DataManager.saveData(storage);
+                    Sounds.playSuccess();
                     Main.updateTableForSelectedCategory(dropdown, storage, model);
                 }
             }
@@ -161,6 +163,7 @@ public class Main {
                     dropdown.addItem(newCategory.trim());
                     storage.addCategory(new Storage(newCategory.trim()));
                     DataManager.saveData(storage);
+                    Sounds.playSuccess();
                     //my new savadata function - ryan
                 }
             }
@@ -178,7 +181,7 @@ public class Main {
         });
 //Arthur
         JFrame addItemFrame = new JFrame("Add Item");
-        addItemFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        addItemFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         addItemFrame.setSize(300, 400);
         addItemFrame.setLayout(new GridLayout(5, 2));
 //Arthur
@@ -278,6 +281,7 @@ public class Main {
                     }
                     selectedStorage.addItem(nameField.getText(), Double.parseDouble(priceField.getText()), Integer.parseInt(quantityField.getText()));
                     DataManager.saveData(storage);
+                    Sounds.playSuccess();
                     JOptionPane.showMessageDialog(null, "Item added successfully!");
                     nameField.setText("");
                     priceField.setText("");
@@ -332,15 +336,17 @@ public class Main {
 //Arthur
         JButton removeItemButton = new JButton("Remove Item");
         JFrame removeItemFrame = new JFrame("Remove Item");
-        removeItemFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
-        removeItemFrame.setSize(300, 200);
+        removeItemFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE); 
+        removeItemFrame.setSize(350, 200);
         removeItemFrame.setLayout(new GridLayout(3, 2));
         removeItemFrame.setVisible(false);
-        removeItemFrame.setBounds(600,50,215,50);
-        JLabel removeCategoryLabel = new JLabel("Category Name:");
-        JTextField removeCategoryField = new JTextField();
+        JLabel removeCategoryLabel = new JLabel("Category:");
+        JComboBox<String> removeCategoryDropdown = new JComboBox<>();
+        for (int i = 0; i < dropdown.getItemCount(); i++) {
+            removeCategoryDropdown.addItem(dropdown.getItemAt(i));
+        }
         removeItemFrame.add(removeCategoryLabel);
-        removeItemFrame.add(removeCategoryField);
+        removeItemFrame.add(removeCategoryDropdown);
 //Arthur
         JLabel removeItemLabel = new JLabel("Item Name:");
         JTextField removeItemField = new JTextField();
@@ -351,16 +357,16 @@ public class Main {
         submitRemoveItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (removeCategoryField.getText().isEmpty()) {
+                if (removeCategoryDropdown.getSelectedItem() == null) {
                         JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
-                        removeCategoryField.requestFocusInWindow();
+                        removeCategoryDropdown.requestFocusInWindow();
                     }
                 else if (removeItemField.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     removeItemField.requestFocusInWindow();
                 }
                 else {
-                    String categoryName = removeCategoryField.getText();
+                    String categoryName = (String) removeCategoryDropdown.getSelectedItem();
                     String itemName = removeItemField.getText();
                     Storage selectedStorage = null;
                     for (int i = 0; i < storage.getMainStorage().size(); i++) {
@@ -371,13 +377,14 @@ public class Main {
                     }
                     if (selectedStorage != null && selectedStorage.removeItem(itemName)) {
                         DataManager.saveData(storage);
+                        Sounds.playSuccess();
                         JOptionPane.showMessageDialog(null, "Item removed successfully!");
-                        removeCategoryField.setText("");
                         removeItemField.setText("");
                         removeItemFrame.setVisible(false);
                         dropdown.setSelectedItem(categoryName);
                         Main.updateTableForSelectedCategory(dropdown, storage, model);
                     } else {
+                        Sounds.playError();
                         JOptionPane.showMessageDialog(null, "Item not found in the specified category!", "Error", JOptionPane.ERROR_MESSAGE);
                         removeItemField.requestFocusInWindow();
                     }
@@ -392,7 +399,11 @@ public class Main {
         removeItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Code to remove item goes here
+                // Refresh the category dropdown with current categories
+                removeCategoryDropdown.removeAllItems();
+                for (int i = 0; i < dropdown.getItemCount(); i++) {
+                    removeCategoryDropdown.addItem(dropdown.getItemAt(i));
+                }
                 removeItemFrame.setVisible(true);
             }   
         });
