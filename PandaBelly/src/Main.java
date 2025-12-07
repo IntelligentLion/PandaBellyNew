@@ -27,6 +27,7 @@ import java.awt.event.ActionListener;
 public class Main {
     public static void main(String[] args) {
         categoryStorage storage = new categoryStorage();
+        storage.addCategory(new Storage("None")); // Add "None" as default category
         String[] columnNames = {"Items", "Quantity", "Price"};
         DefaultTableModel model = new DefaultTableModel(columnNames, 0);
         JTable table = new JTable(model);
@@ -188,7 +189,10 @@ public class Main {
         addItemFrame.setLayout(new GridLayout(5, 2));
 
         JLabel CategoryLabel = new JLabel("Category:");
-        JTextField CategoryField = new JTextField();
+        JComboBox<String> CategoryField = new JComboBox<>();
+        for (int i = 0; i < dropdown.getItemCount(); i++) {
+            CategoryField.addItem(dropdown.getItemAt(i));
+        }
         addItemFrame.add(CategoryLabel);
         addItemFrame.add(CategoryField);
 
@@ -212,7 +216,7 @@ public class Main {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (CategoryField.getText().isEmpty()) {
+                if (CategoryField.getSelectedItem() == null) {
                         JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                         CategoryField.requestFocusInWindow();
                     }
@@ -262,7 +266,7 @@ public class Main {
                     return;
                 }
                 
-                if (!storage.categoryExists(CategoryField.getText())) {
+                if (!storage.categoryExists((String) CategoryField.getSelectedItem())) {
                     JOptionPane.showMessageDialog(null, "Category does not exist!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     CategoryField.requestFocusInWindow();
                     return;
@@ -271,19 +275,18 @@ public class Main {
                 else {
                     Storage selectedStorage = null;
                     for (int i = 0; i < storage.getMainStorage().size(); i++) {
-                        if (storage.getMainStorage().get(i).getCName().equals(CategoryField.getText())) {
+                        if (storage.getMainStorage().get(i).getCName().equals((String) CategoryField.getSelectedItem())) {
                             selectedStorage = storage.getMainStorage().get(i);
                             break;
                         }
                     }
                     selectedStorage.addItem(nameField.getText(), Double.parseDouble(priceField.getText()), Integer.parseInt(quantityField.getText()));
                     JOptionPane.showMessageDialog(null, "Item added successfully!");
-                    CategoryField.setText("");
                     nameField.setText("");
                     priceField.setText("");
                     quantityField.setText("");
                     addItemFrame.setVisible(false);
-                    dropdown.setSelectedItem(CategoryField.getText());
+                    dropdown.setSelectedItem((String) CategoryField.getSelectedItem());
                     Main.updateTableForSelectedCategory(dropdown, storage, model);
                 }
             }
@@ -310,7 +313,11 @@ public class Main {
         addItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Code to add item goes here
+                // Refresh the category dropdown with current categories
+                CategoryField.removeAllItems();
+                for (int i = 0; i < dropdown.getItemCount(); i++) {
+                    CategoryField.addItem(dropdown.getItemAt(i));
+                }
                 addItemFrame.setVisible(true);
             }   
         });
@@ -439,16 +446,12 @@ public class Main {
                 model.setRowCount(0); // Clear existing rows
                 
                 // Here you would fetch and add items based on the selected category
-                if (selectedCategory.equals("None")) {
-                    model.addRow(new Object[]{"No items available", "", ""});
-                } else {
-                    for(Storage storageUnit : storage.getMainStorage()) {
-                        if (storageUnit.getCName().equals(selectedCategory)) {
-                            for (Item item : storageUnit.getCategory()) {
-                                model.addRow(new Object[]{item.getName(), item.getQuantity(), "$" + String.format("%.2f", item.getPrice())});
-                            }
-                            break;
+                for(Storage storageUnit : storage.getMainStorage()) {
+                    if (storageUnit.getCName().equals(selectedCategory)) {
+                        for (Item item : storageUnit.getCategory()) {
+                            model.addRow(new Object[]{item.getName(), item.getQuantity(), "$" + String.format("%.2f", item.getPrice())});
                         }
+                        break;
                     }
                 }
             }
@@ -465,16 +468,12 @@ public class Main {
                 model.setRowCount(0); // Clear existing rows
                 
                 // Here you would fetch and add items based on the selected category
-                if (selectedCategory.equals("None")) {
-                    model.addRow(new Object[]{"No items available", "", ""});
-                } else {
-                    for(Storage storageUnit : storage.getMainStorage()) {
-                        if (storageUnit.getCName().equals(selectedCategory)) {
-                            for (Item item : storageUnit.getCategory()) {
-                                model.addRow(new Object[]{item.getName(), item.getQuantity(), "$" + String.format("%.2f", item.getPrice())});
-                            }
-                            break;
+                for(Storage storageUnit : storage.getMainStorage()) {
+                    if (storageUnit.getCName().equals(selectedCategory)) {
+                        for (Item item : storageUnit.getCategory()) {
+                            model.addRow(new Object[]{item.getName(), item.getQuantity(), "$" + String.format("%.2f", item.getPrice())});
                         }
+                        break;
                     }
                 }
     }
