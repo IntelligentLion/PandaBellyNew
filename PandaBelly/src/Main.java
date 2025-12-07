@@ -451,44 +451,7 @@ public class Main {
     
     }
 
-//ryan - load data and save data functions by ryan: allows us to store data. 
-
-    // Load: each line is category,name,price,quantity
-    private static void loadData(categoryStorage storage, JComboBox<String> dropdown) throws IOException {
-        Scanner scanner = new Scanner(new File(DATA_FILE));
-        while (scanner.hasNextLine()) {
-            String[] parts = scanner.nextLine().split(",");
-            if (!storage.categoryExists(parts[0])) {
-                storage.addCategory(new Storage(parts[0]));
-                dropdown.addItem(parts[0]);
-            }
-            if (parts.length == 4) {
-                for (Storage s : storage.getMainStorage())
-                    if (s.getCName().equals(parts[0]))
-                        s.addItem(parts[1], Double.parseDouble(parts[2]), Integer.parseInt(parts[3]));
-            }
-        }
-        scanner.close();
-    }
-
-    // Save: each line is category,name,price,quantity
-    private static void saveData(categoryStorage storage) {
-        try { 
-            PrintWriter writer = new PrintWriter(DATA_FILE);
-            //btw printwriter is like System.out.print but it writes to a file instead of the console
-            for (Storage s : storage.getMainStorage()) {
-                if (s.getCategory().isEmpty()) writer.println(s.getCName());
-                for (Item item : s.getCategory()) {
-                    writer.println(s.getCName() + "," + item.getName() + "," + item.getPrice() + "," + item.getQuantity());
-                }
-            }
-            writer.close();
-
-    //ryan: java needs a try-except loop to compile, i dont know why. edited it to catch and it works
-        } catch (Exception e) {}
-    }
-
-    private static void updateTableForSelectedCategory(JComboBox<String> dropdown, categoryStorage storage, DefaultTableModel model) {
+private static void updateTableForSelectedCategory(JComboBox<String> dropdown, categoryStorage storage, DefaultTableModel model) {
         String selectedCategory = (String) dropdown.getSelectedItem();
                 // Update the table based on the selected category
                 // For demonstration, we'll just clear and add example data
