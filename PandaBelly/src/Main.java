@@ -1,7 +1,8 @@
-import java.io.BufferedWriter;
+//these are all our imports, the yellow suiggly lines can be ignored since they arent actual errors
+
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -23,11 +24,12 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
+//all gui components inside Main class
 public class Main {
-    public static void main(String[] args) {
+    private static final String DATA_FILE = "data.txt";
+
+    public static void main(String[] args) throws IOException {
         categoryStorage storage = new categoryStorage();
-        storage.addCategory(new Storage("None")); // Add "None" as default category
         String[] columnNames = {"Items", "Quantity", "Price"};
         DefaultTableModel model = new DefaultTableModel(columnNames, 0);
         JTable table = new JTable(model);
@@ -35,6 +37,9 @@ public class Main {
 
         UIManager.put("Label.font", new Font("Chaucer", Font.PLAIN, 25));
  
+
+
+        //Ritvin's attempt to put a gif background
         JFrame frame = new JFrame("PandaBelly");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
@@ -44,8 +49,10 @@ public class Main {
         frame.setBackground(java.awt.Color.BLUE);
         frame.setIconImage(new ImageIcon("cherry.gif").getImage());
         
-        String[] options = {"None"};
+        String[] options = {};
         JComboBox<String> dropdown = new JComboBox<>(options);
+        
+        loadData(storage, dropdown);
         
         JPanel panel = new JPanel();
         panel.add(dropdown);
@@ -53,7 +60,7 @@ public class Main {
         frame.add(panel);
         panel.setOpaque(true);
 
-        
+        //these are the 3 lil pannels at the top
 
         JPanel itemPanel = new JPanel();
         itemPanel.setBorder(BorderFactory.createEtchedBorder());
@@ -83,17 +90,7 @@ public class Main {
         quantLabel1.setSize(100, 80);
         quantPanel.add(quantLabel1, BorderLayout.CENTER);
         quantPanel.setBackground(java.awt.Color.WHITE);
-/* 
-        JPanel SKUPanel = new JPanel();
-        SKUPanel.setBorder(BorderFactory.createEtchedBorder());
-        SKUPanel.setBounds(, 100, 175, 100);
-        frame.add(SKUPanel);
-        SKUPanel.setLayout(new BorderLayout());
-        JLabel SKULabel1 = new JLabel("SKU", SwingConstants.CENTER);
-        SKULabel1.setSize(100, 80);
-        SKUPanel.add(SKULabel1, BorderLayout.CENTER);
-        SKUPanel.setBackground(java.awt.Color.WHITE);
-*/
+        //panels end, we got rid of the SKU idea btw
 
 
         JPanel bigPanel = new JPanel();
@@ -107,19 +104,7 @@ public class Main {
         // (repeat for other small panels if desired)
         
 
-
-        /* 
-        DefaultTableModel model = new DefaultTableModel(data, columnNames);
-        JTable table = new JTable(model);
-        table.setRowHeight(30);
-
-        // Wrap the table in a JScrollPane to display headers and enable scrolling
-        JScrollPane scrollPane = new JScrollPane(table);
-
-        // Add the scroll pane to the frame's content pane
-        frame.add(scrollPane, BorderLayout.CENTER);
-*/
-
+//Arthur: remove category button, the edges are a little off though.
         JButton removeCategoryButton = new JButton("Remove Category");
         JPanel removeButtonPanel = new JPanel();
         removeButtonPanel.setBounds(575,50,200,50);
@@ -143,17 +128,18 @@ public class Main {
                 if(selectedCategory.equals("None")){
                     JOptionPane.showMessageDialog(frame, "Cannot remove 'None' category.");
                     return;
+                    // Exception handling
                 }
                 if (selectedCategory != null && !selectedCategory.trim().isEmpty()) {
                     dropdown.removeItem(selectedCategory.trim());
                     storage.removeCategory(selectedCategory.trim());
+                    saveData(storage);
                     Main.updateTableForSelectedCategory(dropdown, storage, model);
-                    // Here you would also add code to save the removed category to a file
                 }
             }
         });
 
-
+//Arthur
 
         JButton addcategory = new JButton("Add Category");
         JPanel addcategoryPanel = new JPanel();
@@ -167,7 +153,8 @@ public class Main {
                 if (newCategory != null && !newCategory.trim().isEmpty()) {
                     dropdown.addItem(newCategory.trim());
                     storage.addCategory(new Storage(newCategory.trim()));
-                    // Here you would also add code to save the new category to a file
+                    saveData(storage);
+                    //my new savadata function - ryan
                 }
             }
         });
@@ -182,12 +169,12 @@ public class Main {
                 addcategory.setContentAreaFilled(false);
             }
         });
-
+//Arthur
         JFrame addItemFrame = new JFrame("Add Item");
         addItemFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         addItemFrame.setSize(300, 400);
         addItemFrame.setLayout(new GridLayout(5, 2));
-
+//Arthur
         JLabel CategoryLabel = new JLabel("Category:");
         JComboBox<String> CategoryField = new JComboBox<>();
         for (int i = 0; i < dropdown.getItemCount(); i++) {
@@ -195,22 +182,24 @@ public class Main {
         }
         addItemFrame.add(CategoryLabel);
         addItemFrame.add(CategoryField);
-
+//Arthur
         JLabel nameLabel = new JLabel("Name:");
         JTextField nameField = new JTextField();
         addItemFrame.add(nameLabel);
         addItemFrame.add(nameField);
-
+//Arthur
         JLabel priceLabel = new JLabel("Price:        $");
         JTextField priceField = new JTextField();
         addItemFrame.add(priceLabel);
         addItemFrame.add(priceField);
-
+//Arthur
         JLabel quantityLabel = new JLabel("Quantity:");
         JTextField quantityField = new JTextField();
         addItemFrame.add(quantityLabel);
         addItemFrame.add(quantityField);
 
+
+        //Arthur
         JButton submitButton = new JButton("Submit");
         addItemFrame.add(submitButton);
         submitButton.addActionListener(new ActionListener() {
@@ -281,6 +270,7 @@ public class Main {
                         }
                     }
                     selectedStorage.addItem(nameField.getText(), Double.parseDouble(priceField.getText()), Integer.parseInt(quantityField.getText()));
+                    saveData(storage);
                     JOptionPane.showMessageDialog(null, "Item added successfully!");
                     nameField.setText("");
                     priceField.setText("");
@@ -304,7 +294,7 @@ public class Main {
         });
 
 
-
+//Arthur
         JButton addItemButton = new JButton("Add Item");
         JPanel addItemPanel = new JPanel();
         addItemPanel.setBounds(175, 10, 200, 50);
@@ -332,7 +322,7 @@ public class Main {
                 addItemButton.setContentAreaFilled(false);
             }
         });
-
+//Arthur
         JButton removeItemButton = new JButton("Remove Item");
         JFrame removeItemFrame = new JFrame("Remove Item");
         removeItemFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
@@ -343,7 +333,7 @@ public class Main {
         JTextField removeCategoryField = new JTextField();
         removeItemFrame.add(removeCategoryLabel);
         removeItemFrame.add(removeCategoryField);
-
+//Arthur
         JLabel removeItemLabel = new JLabel("Item Name:");
         JTextField removeItemField = new JTextField();
         removeItemFrame.add(removeItemLabel);
@@ -372,6 +362,7 @@ public class Main {
                         }
                     }
                     if (selectedStorage != null && selectedStorage.removeItem(itemName)) {
+                        saveData(storage);
                         JOptionPane.showMessageDialog(null, "Item removed successfully!");
                         removeCategoryField.setText("");
                         removeItemField.setText("");
@@ -385,7 +376,7 @@ public class Main {
                 }
             }   
         });
-
+//Arthur
         JPanel removeItemPanel = new JPanel();
         removeItemPanel.setBounds(550, 10, 200, 50);
         removeItemPanel.add(removeItemButton);
@@ -419,10 +410,10 @@ public class Main {
         
 
 
-        // Create a DefaultTableModel and JTable
         
+        //ryan - adding Jtable to display our data
         
-        // Add example data
+        //  example data, not stored in any category so we can disregard, its more a proof of concept
         model.addRow(new Object[]{"Bamboo", 5, "$12.99"});
         model.addRow(new Object[]{"Panda Food", 10, "$8.50"});
         model.addRow(new Object[]{"Bamboo Shoots", 8, "$15.00"});
@@ -461,6 +452,43 @@ public class Main {
     
     }
 
+//ryan - load data and save data functions by ryan: allows us to store data. 
+
+    // Load: each line is category,name,price,quantity
+    private static void loadData(categoryStorage storage, JComboBox<String> dropdown) throws IOException {
+        Scanner scanner = new Scanner(new File(DATA_FILE));
+        while (scanner.hasNextLine()) {
+            String[] parts = scanner.nextLine().split(",");
+            if (!storage.categoryExists(parts[0])) {
+                storage.addCategory(new Storage(parts[0]));
+                dropdown.addItem(parts[0]);
+            }
+            if (parts.length == 4) {
+                for (Storage s : storage.getMainStorage())
+                    if (s.getCName().equals(parts[0]))
+                        s.addItem(parts[1], Double.parseDouble(parts[2]), Integer.parseInt(parts[3]));
+            }
+        }
+        scanner.close();
+    }
+
+    // Save: each line is category,name,price,quantity
+    private static void saveData(categoryStorage storage) {
+        try { 
+            PrintWriter writer = new PrintWriter(DATA_FILE);
+            //btw printwriter is like System.out.print but it writes to a file instead of the console
+            for (Storage s : storage.getMainStorage()) {
+                if (s.getCategory().isEmpty()) writer.println(s.getCName());
+                for (Item item : s.getCategory()) {
+                    writer.println(s.getCName() + "," + item.getName() + "," + item.getPrice() + "," + item.getQuantity());
+                }
+            }
+            writer.close();
+
+    //ryan: java needs a try-except loop to compile, i dont know why. edited it to catch and it works
+        } catch (Exception e) {}
+    }
+
     private static void updateTableForSelectedCategory(JComboBox<String> dropdown, categoryStorage storage, DefaultTableModel model) {
         String selectedCategory = (String) dropdown.getSelectedItem();
                 // Update the table based on the selected category
@@ -478,20 +506,6 @@ public class Main {
                 }
     }
 
-    /*Arthur: For the file stuff, we can use special characters to act as keys to separate different items and stuff
-    for example, we can use %% or something to separate items, and categories by &&
-    so maybe the first line of the txt is just a list of categories like balls&&cubes&&blahblah
-    and then the next lines each individual item with the first part being the category it belongs to
-    like balls%%red ball%%5%%$10.00%%SKUBLAHBLAHBLAH
-     */
 
-    // public void addToFile(String fileName, String textToAdd) {
-    //     BufferedWriter writer = null;
-    //     FileWriter fileWriter = new FileWriter(fileName, true);
-    //     writer = new BufferedWriter(fileWriter);
-    //     writer.write(textToAdd);
-    //     writer.newLine();
-        
-    // }
 }
     
