@@ -9,6 +9,7 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.Color;
 import java.awt.BorderLayout;
+import java.awt.Image;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.GradientPaint;
@@ -46,7 +47,14 @@ public class Main {
         frame.setSize(1000,700);
         frame.setLocationRelativeTo(null); // Center the frame
         frame.setBackground(java.awt.Color.BLUE);
-        frame.setIconImage(new ImageIcon("cherry.gif").getImage());
+        frame.setIconImage(new ImageIcon("PandaBelly/src/panda.png").getImage());
+        
+        // ryan: panda image in top-right corner 
+        ImageIcon pandaIcon = new ImageIcon("PandaBelly/src/panda.png");
+        Image scaledPanda = pandaIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        JLabel pandaLabel = new JLabel(new ImageIcon(scaledPanda));
+        pandaLabel.setBounds(890, 10, 50, 50);
+        frame.add(pandaLabel);
         
         String[] options = {};
         JComboBox<String> dropdown = new JComboBox<>(options);
@@ -106,7 +114,7 @@ public class Main {
 //Arthur: remove category button, the edges are a little off though.
         JButton removeCategoryButton = new JButton("Remove Category");
         JPanel removeButtonPanel = new JPanel();
-        removeButtonPanel.setBounds(575,50,200,50);
+        removeButtonPanel.setBounds(600,50,200,50);
         removeButtonPanel.add(removeCategoryButton);
         frame.add(removeButtonPanel);
         removeCategoryButton.setContentAreaFilled(false);
@@ -142,7 +150,7 @@ public class Main {
 
         JButton addcategory = new JButton("Add Category");
         JPanel addcategoryPanel = new JPanel();
-        addcategoryPanel.setBounds(400,50,200,50);
+        addcategoryPanel.setBounds(380,50,220,50);
         addcategoryPanel.add(addcategory);
         frame.add(addcategoryPanel);
         addcategory.addActionListener(new ActionListener() {
@@ -328,6 +336,7 @@ public class Main {
         removeItemFrame.setSize(300, 200);
         removeItemFrame.setLayout(new GridLayout(3, 2));
         removeItemFrame.setVisible(false);
+        removeItemFrame.setBounds(600,50,215,50);
         JLabel removeCategoryLabel = new JLabel("Category Name:");
         JTextField removeCategoryField = new JTextField();
         removeItemFrame.add(removeCategoryLabel);
@@ -377,7 +386,7 @@ public class Main {
         });
 //Arthur
         JPanel removeItemPanel = new JPanel();
-        removeItemPanel.setBounds(550, 10, 200, 50);
+        removeItemPanel.setBounds(600, 10, 200, 50);
         removeItemPanel.add(removeItemButton);
         frame.add(removeItemPanel);
         removeItemButton.addActionListener(new ActionListener() {
