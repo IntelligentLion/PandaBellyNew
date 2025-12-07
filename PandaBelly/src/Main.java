@@ -26,7 +26,6 @@ import java.awt.event.ActionListener;
 
 //all gui components inside Main class
 public class Main {
-    private static final String DATA_FILE = "data.txt";
 
     public static void main(String[] args) throws IOException {
         categoryStorage storage = new categoryStorage();
@@ -52,7 +51,7 @@ public class Main {
         String[] options = {};
         JComboBox<String> dropdown = new JComboBox<>(options);
         
-        loadData(storage, dropdown);
+        DataManager.loadData(storage, dropdown);
         
         JPanel panel = new JPanel();
         panel.add(dropdown);
@@ -133,7 +132,7 @@ public class Main {
                 if (selectedCategory != null && !selectedCategory.trim().isEmpty()) {
                     dropdown.removeItem(selectedCategory.trim());
                     storage.removeCategory(selectedCategory.trim());
-                    saveData(storage);
+                    DataManager.saveData(storage);
                     Main.updateTableForSelectedCategory(dropdown, storage, model);
                 }
             }
@@ -153,7 +152,7 @@ public class Main {
                 if (newCategory != null && !newCategory.trim().isEmpty()) {
                     dropdown.addItem(newCategory.trim());
                     storage.addCategory(new Storage(newCategory.trim()));
-                    saveData(storage);
+                    DataManager.saveData(storage);
                     //my new savadata function - ryan
                 }
             }
@@ -270,7 +269,7 @@ public class Main {
                         }
                     }
                     selectedStorage.addItem(nameField.getText(), Double.parseDouble(priceField.getText()), Integer.parseInt(quantityField.getText()));
-                    saveData(storage);
+                    DataManager.saveData(storage);
                     JOptionPane.showMessageDialog(null, "Item added successfully!");
                     nameField.setText("");
                     priceField.setText("");
@@ -362,7 +361,7 @@ public class Main {
                         }
                     }
                     if (selectedStorage != null && selectedStorage.removeItem(itemName)) {
-                        saveData(storage);
+                        DataManager.saveData(storage);
                         JOptionPane.showMessageDialog(null, "Item removed successfully!");
                         removeCategoryField.setText("");
                         removeItemField.setText("");
