@@ -58,8 +58,10 @@ public class Main {
         
         String[] options = {};
         JComboBox<String> dropdown = new JComboBox<>(options);
+        dropdown.setPreferredSize(new Dimension(200, 30));
         
         DataManager.loadData(storage, dropdown);
+        updateTableForSelectedCategory(dropdown, storage, model);
         
         JPanel panel = new JPanel();
         panel.add(dropdown);
@@ -160,11 +162,14 @@ public class Main {
             public void actionPerformed(ActionEvent e) {
                 String newCategory = JOptionPane.showInputDialog(frame, "Enter new category name:");
                 if (newCategory != null && !newCategory.trim().isEmpty()) {
-                    dropdown.addItem(newCategory.trim());
-                    storage.addCategory(new Storage(newCategory.trim()));
+                    String cat = newCategory.trim();
+                    dropdown.addItem(cat);
+                    storage.addCategory(new Storage(cat));
                     DataManager.saveData(storage);
                     Sounds.playSuccess();
-                    //my new savadata function - ryan
+                    // Select the newly added category and refresh the table
+                    dropdown.setSelectedItem(cat);
+                    Main.updateTableForSelectedCategory(dropdown, storage, model);
                 }
             }
         });
@@ -179,12 +184,12 @@ public class Main {
                 addcategory.setContentAreaFilled(false);
             }
         });
-//Arthur
+//Arthur: the add item frame and its components
         JFrame addItemFrame = new JFrame("Add Item");
         addItemFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         addItemFrame.setSize(300, 400);
         addItemFrame.setLayout(new GridLayout(5, 2));
-//Arthur
+//Arthur: Labels for the add item frame
         JLabel CategoryLabel = new JLabel("Category:");
         JComboBox<String> CategoryField = new JComboBox<>();
         for (int i = 0; i < dropdown.getItemCount(); i++) {
@@ -192,24 +197,24 @@ public class Main {
         }
         addItemFrame.add(CategoryLabel);
         addItemFrame.add(CategoryField);
-//Arthur
+//Arthur: Labels for the add item frame
         JLabel nameLabel = new JLabel("Name:");
         JTextField nameField = new JTextField();
         addItemFrame.add(nameLabel);
         addItemFrame.add(nameField);
-//Arthur
+//Arthur: Labels for the add item frame
         JLabel priceLabel = new JLabel("Price:        $");
         JTextField priceField = new JTextField();
         addItemFrame.add(priceLabel);
         addItemFrame.add(priceField);
-//Arthur
+//Arthur:Labels for the add item frame
         JLabel quantityLabel = new JLabel("Quantity:");
         JTextField quantityField = new JTextField();
         addItemFrame.add(quantityLabel);
         addItemFrame.add(quantityField);
 
 
-        //Arthur
+        //Arthur: different cases and exceptions for adding an item. Pressing the submit button runs through all the checks, if everything is valid, it adds the item.
         JButton submitButton = new JButton("Submit");
         addItemFrame.add(submitButton);
         submitButton.addActionListener(new ActionListener() {
@@ -270,15 +275,35 @@ public class Main {
                     CategoryField.requestFocusInWindow();
                     return;
                 }
+                
+                // Check if item already exists in the category
+                Storage selectedStorage = null;
+                for (int i = 0; i < storage.getMainStorage().size(); i++) {
+                    if (storage.getMainStorage().get(i).getCName().equals((String) CategoryField.getSelectedItem())) {
+                        selectedStorage = storage.getMainStorage().get(i);
+                        break;
+                    }
+                }
+                
+                if (selectedStorage != null) {
+                    for (Item item : selectedStorage.getCategory()) {
+                        if (item.getName().equalsIgnoreCase(nameField.getText())) {
+                            Sounds.playError();
+                            JOptionPane.showMessageDialog(null, "Item already exists in this category!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                            nameField.requestFocusInWindow();
+                            return;
+                        }
+                    }
+                }
 
-                else {
-                    Storage selectedStorage = null;
+                if (!nameField.getText().isEmpty()) {
                     for (int i = 0; i < storage.getMainStorage().size(); i++) {
                         if (storage.getMainStorage().get(i).getCName().equals((String) CategoryField.getSelectedItem())) {
                             selectedStorage = storage.getMainStorage().get(i);
                             break;
                         }
                     }
+                    //Runs if all checks are passed, adds the item to the selected category
                     selectedStorage.addItem(nameField.getText(), Double.parseDouble(priceField.getText()), Integer.parseInt(quantityField.getText()));
                     DataManager.saveData(storage);
                     Sounds.playSuccess();
@@ -292,6 +317,7 @@ public class Main {
                 }
             }
         });
+        //Changes the button color on hover
         submitButton.setContentAreaFilled(false);
         submitButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -305,7 +331,7 @@ public class Main {
         });
 
 
-//Arthur
+//Arthur:Add Item button and its panel
         JButton addItemButton = new JButton("Add Item");
         JPanel addItemPanel = new JPanel();
         addItemPanel.setBounds(175, 10, 200, 50);
@@ -333,7 +359,7 @@ public class Main {
                 addItemButton.setContentAreaFilled(false);
             }
         });
-//Arthur
+//Arthur: Remove Item button, frame and its components
         JButton removeItemButton = new JButton("Remove Item");
         JFrame removeItemFrame = new JFrame("Remove Item");
         removeItemFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE); 
@@ -347,7 +373,7 @@ public class Main {
         }
         removeItemFrame.add(removeCategoryLabel);
         removeItemFrame.add(removeCategoryDropdown);
-//Arthur
+//Arthur: Labels for remove item frame
         JLabel removeItemLabel = new JLabel("Item Name:");
         JTextField removeItemField = new JTextField();
         removeItemFrame.add(removeItemLabel);
@@ -391,7 +417,7 @@ public class Main {
                 }
             }   
         });
-//Arthur
+//Arthur: Remove Item button and its panel
         JPanel removeItemPanel = new JPanel();
         removeItemPanel.setBounds(600, 10, 200, 50);
         removeItemPanel.add(removeItemButton);
@@ -433,10 +459,10 @@ public class Main {
         //ryan - adding Jtable to display our data
         
         //  example data, not stored in any category so we can disregard, its more a proof of concept
-        model.addRow(new Object[]{"Bamboo", 5, "$12.99"});
-        model.addRow(new Object[]{"Panda Food", 10, "$8.50"});
-        model.addRow(new Object[]{"Bamboo Shoots", 8, "$15.00"});
-        model.addRow(new Object[]{"Leaves", 20, "$3.25"});
+        // model.addRow(new Object[]{"Bamboo", 5, "$12.99"});
+        // model.addRow(new Object[]{"Panda Food", 10, "$8.50"});
+        // model.addRow(new Object[]{"Bamboo Shoots", 8, "$15.00"});
+        // model.addRow(new Object[]{"Leaves", 20, "$3.25"});
         
         
 
@@ -450,12 +476,20 @@ public class Main {
         dropdown.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String selectedCategory = (String) dropdown.getSelectedItem();
+                Main.updateTableForSelectedCategory(dropdown, storage, model);
+            }
+        });
+        
+        frame.setVisible(true);
+    
+    }
+
+//Arthur: Update table method to refresh the table based on selected category
+private static void updateTableForSelectedCategory(JComboBox<String> dropdown, categoryStorage storage, DefaultTableModel model) {
+        String selectedCategory = (String) dropdown.getSelectedItem();
                 // Update the table based on the selected category
-                // For demonstration, we'll just clear and add example data
                 model.setRowCount(0); // Clear existing rows
-                
-                // Here you would fetch and add items based on the selected category
+
                 for(Storage storageUnit : storage.getMainStorage()) {
                     if (storageUnit.getCName().equals(selectedCategory)) {
                         for (Item item : storageUnit.getCategory()) {
@@ -464,27 +498,8 @@ public class Main {
                         break;
                     }
                 }
-            }
-        });
-        
-        frame.setVisible(true);
-    
-    }
-
-private static void updateTableForSelectedCategory(JComboBox<String> dropdown, categoryStorage storage, DefaultTableModel model) {
-        String selectedCategory = (String) dropdown.getSelectedItem();
-                // Update the table based on the selected category
-                // For demonstration, we'll just clear and add example data
-                model.setRowCount(0); // Clear existing rows
-                
-                // Here you would fetch and add items based on the selected category
-                for(Storage storageUnit : storage.getMainStorage()) {
-                    if (storageUnit.getCName().equals(selectedCategory)) {
-                        for (Item item : storageUnit.getCategory()) {
-                            model.addRow(new Object[]{item.getName(), item.getQuantity(), "$" + String.format("%.2f", item.getPrice())});
-                        }
-                        break;
-                    }
+                if(model.getRowCount() == 0){
+                    model.addRow(new Object[]{"No items in this category", "", ""});
                 }
     }
 
