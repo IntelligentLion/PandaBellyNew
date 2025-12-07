@@ -15,7 +15,14 @@ public class DataManager {
 
     // Load: each line is category,name,price,quantity
     public static void loadData(categoryStorage storage, JComboBox<String> dropdown) throws IOException {
-        Scanner scanner = new Scanner(new File(DATA_FILE));
+        File file = new File(DATA_FILE);
+        if (!file.exists()) {
+            // No data file yet, add default "None" category
+            storage.addCategory(new Storage("None"));
+            dropdown.addItem("None");
+            return;
+        }
+        Scanner scanner = new Scanner(file);
         while (scanner.hasNextLine()) {
             String[] parts = scanner.nextLine().split(",");
             if (!storage.categoryExists(parts[0])) {
