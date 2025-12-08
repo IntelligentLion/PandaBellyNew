@@ -492,6 +492,121 @@ public class Main {
             }
         });
 
+        JButton modifyItemButton = new JButton("Modify Item");
+        JPanel modifyItemPanel = new JPanel();
+        JFrame modifyItemFrame = new JFrame("Modify Item");
+        modifyItemFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        modifyItemFrame.setSize(400, 400);
+        modifyItemFrame.setLayout(new GridLayout(6, 2));
+        modifyItemFrame.setVisible(false);
+        //Arthur: Labels for modify item frame
+        JLabel modifyCategoryLabel = new JLabel("Category:");
+        JComboBox<String> modifyCategoryDropdown = new JComboBox<>();
+        for (int i = 0; i < dropdown.getItemCount(); i++) {
+            modifyCategoryDropdown.addItem(dropdown.getItemAt(i));
+        }
+        modifyItemFrame.add(modifyCategoryLabel);
+        modifyItemFrame.add(modifyCategoryDropdown);
+        JLabel modifyItemLabel = new JLabel("Item Name:");
+        JTextField modifyItemField = new JTextField();
+        modifyItemFrame.add(modifyItemLabel);
+        modifyItemFrame.add(modifyItemField);
+        JLabel newNameLabel = new JLabel("New Name:");
+        JTextField newNameField = new JTextField();
+        modifyItemFrame.add(newNameLabel);
+        modifyItemFrame.add(newNameField);
+        JLabel newPriceLabel = new JLabel("New Price:        $");
+        JTextField newPriceField = new JTextField();
+        modifyItemFrame.add(newPriceLabel);
+        modifyItemFrame.add(newPriceField);
+        JLabel newQuantityLabel = new JLabel("New Quantity:");
+        JTextField newQuantityField = new JTextField();
+        modifyItemFrame.add(newQuantityLabel);
+        modifyItemFrame.add(newQuantityField);
+        JButton modifyItemSubmitButton = new JButton("Submit");
+        modifyItemFrame.add(modifyItemSubmitButton);
+        modifyItemSubmitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (modifyCategoryDropdown.getSelectedItem() == null) {
+                        JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                        modifyCategoryDropdown.requestFocusInWindow();
+                    }
+                else if (modifyItemField.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    modifyItemField.requestFocusInWindow();
+                }
+                else if (newNameField.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    newNameField.requestFocusInWindow();
+                }
+                else if (newPriceField.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    newPriceField.requestFocusInWindow();
+                }
+                else if (newQuantityField.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    newQuantityField.requestFocusInWindow();
+                }
+                else {
+                    String categoryName = (String) modifyCategoryDropdown.getSelectedItem();
+                    String itemName = modifyItemField.getText();
+                    Storage selectedStorage = null;
+                    for (int i = 0; i < storage.getMainStorage().size(); i++) {
+                        if (storage.getMainStorage().get(i).getCName().equals(categoryName)) {
+                            selectedStorage = storage.getMainStorage().get(i);
+                            break;
+                        }
+                    }
+                    if (selectedStorage != null) {
+                        boolean modified = selectedStorage.modifyItem(itemName, newNameField.getText(), Double.parseDouble(newPriceField.getText()), Integer.parseInt(newQuantityField.getText()));
+                        if (modified) {
+                            DataManager.saveData(storage);
+                            Sounds.playSuccess();
+                            JOptionPane.showMessageDialog(null, "Item modified successfully!");
+                            modifyItemField.setText("");
+                            newNameField.setText("");
+                            newPriceField.setText("");
+                            newQuantityField.setText("");
+                            modifyItemFrame.setVisible(false);
+                            dropdown.setSelectedItem(categoryName);
+                            Main.updateTableForSelectedCategory(dropdown, storage, model);
+                        } else {
+                            Sounds.playError();
+                            JOptionPane.showMessageDialog(null, "Item not found in the specified category!", "Error", JOptionPane.ERROR_MESSAGE);
+                            modifyItemField.requestFocusInWindow();
+                        }
+                    }
+                }
+            }
+        });
+
+        modifyItemPanel.setBounds(400, 10, 200, 50);
+        modifyItemPanel.add(modifyItemButton);
+        modifyItemButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Refresh the category dropdown with current categories
+                modifyCategoryDropdown.removeAllItems();
+                for (int i = 0; i < dropdown.getItemCount(); i++) {
+                    modifyCategoryDropdown.addItem(dropdown.getItemAt(i));
+                }
+                modifyItemFrame.setVisible(true);
+            }   
+        });
+        frame.add(modifyItemPanel);
+        modifyItemButton.setContentAreaFilled(false);
+        modifyItemButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                modifyItemButton.setContentAreaFilled(true);
+                modifyItemButton.setBackground(new Color(255, 100, 100));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                modifyItemButton.setContentAreaFilled(false);
+            }
+        });
+
        
        
 
@@ -528,11 +643,10 @@ public class Main {
         });
         
         frame.setVisible(true);
-    
     }
-
-//Arthur: Update table method to refresh the table based on selected category
-private static void updateTableForSelectedCategory(JComboBox<String> dropdown, categoryStorage storage, DefaultTableModel model) {
+    
+    //Arthur: Update table method to refresh the table based on selected category
+    public static void updateTableForSelectedCategory(JComboBox<String> dropdown, categoryStorage storage, DefaultTableModel model) {
         String selectedCategory = (String) dropdown.getSelectedItem();
                 // Update the table based on the selected category
                 model.setRowCount(0); // Clear existing rows
@@ -550,6 +664,6 @@ private static void updateTableForSelectedCategory(JComboBox<String> dropdown, c
                 }
     }
 
-
 }
     
+
