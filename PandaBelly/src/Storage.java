@@ -52,5 +52,11 @@ public class Storage {
         return category;
     }
 
+    //mutator method to set the category's name
+    public void setCName(String cName) {
+        this.categoryName = cName;
+    }
+    
+
     
 }

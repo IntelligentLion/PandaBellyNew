@@ -116,7 +116,7 @@ public class Main {
 //Arthur: remove category button, the edges are a little off though.
         JButton removeCategoryButton = new JButton("Remove Category");
         JPanel removeButtonPanel = new JPanel();
-        removeButtonPanel.setBounds(600,50,200,50);
+        removeButtonPanel.setBounds(700,50,180,50);
         removeButtonPanel.add(removeCategoryButton);
         frame.add(removeButtonPanel);
         removeCategoryButton.setContentAreaFilled(false);
@@ -154,7 +154,7 @@ public class Main {
 
         JButton addcategory = new JButton("Add Category");
         JPanel addcategoryPanel = new JPanel();
-        addcategoryPanel.setBounds(380,50,220,50);
+        addcategoryPanel.setBounds(350,50,200,50);
         addcategoryPanel.add(addcategory);
         frame.add(addcategoryPanel);
         addcategory.addActionListener(new ActionListener() {
@@ -182,6 +182,53 @@ public class Main {
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 addcategory.setContentAreaFilled(false);
+            }
+        });
+
+        JButton modifyCategoryButton = new JButton("Modify Category");
+        JPanel modifyCategoryPanel = new JPanel();
+        modifyCategoryPanel.setBounds(515, 50, 200, 50);
+        modifyCategoryPanel.add(modifyCategoryButton);
+        frame.add(modifyCategoryPanel);
+        modifyCategoryButton.setContentAreaFilled(false);
+        modifyCategoryButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                modifyCategoryButton.setContentAreaFilled(true);
+                modifyCategoryButton.setBackground(new Color(255, 100, 100));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                modifyCategoryButton.setContentAreaFilled(false);
+            }
+        });
+        modifyCategoryButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String oldCategory = JOptionPane.showInputDialog(frame, "Enter the category name to modify:");
+                if (oldCategory != null && !oldCategory.trim().isEmpty()) {
+                    String newCategory = JOptionPane.showInputDialog(frame, "Enter the new category name:");
+                    if (newCategory != null && !newCategory.trim().isEmpty()) {
+                        if(oldCategory.equals("None")){
+                            Sounds.playError();
+                            JOptionPane.showMessageDialog(frame, "Cannot modify 'None' category.");
+                            return;
+                            // Exception handling
+                        }
+                        boolean modified = storage.modifyCategory(oldCategory.trim(), newCategory.trim());
+                        if (modified) {
+                            dropdown.removeItem(oldCategory.trim());
+                            dropdown.addItem(newCategory.trim());
+                            DataManager.saveData(storage);
+                            Sounds.playSuccess();
+                            // Select the modified category and refresh the table
+                            dropdown.setSelectedItem(newCategory.trim());
+                            Main.updateTableForSelectedCategory(dropdown, storage, model);
+                        } else {
+                            Sounds.playError();
+                            JOptionPane.showMessageDialog(frame, "Category not found: " + oldCategory);
+                        }
+                    }
+                }
             }
         });
 //Arthur: the add item frame and its components

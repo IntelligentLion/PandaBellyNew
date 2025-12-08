@@ -39,4 +39,13 @@ public class categoryStorage{
     }
 
 
+    public boolean modifyCategory(String oldName, String newName){
+        for(Storage y: mainStorage){
+            if(y.getCName().equals(oldName)){
+                y.setCName(newName);
+                return true;
+            }
+        }
+        return false;
+    }
 }
