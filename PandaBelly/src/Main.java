@@ -612,6 +612,8 @@ public class Main {
         mainMenuPandaLabel.setBounds(400, 250, 200, 200);
         frame.add(mainMenuPandaLabel);
 
+        JButton returnToMenuButton = new JButton("Back to \nMain Menu");
+        JPanel returnToMenuPanel = new JPanel();
         JButton mainMenuButton = new JButton("Enter PandaBelly");
         JPanel mainMenuPanel = new JPanel();
         mainMenuPanel.setBounds(400, 550, 200, 50);
@@ -631,9 +633,36 @@ public class Main {
                 frame.add(pricePanel);
                 frame.add(quantPanel);
                 frame.add(bigPanel);
+                frame.add(returnToMenuPanel);
                 mainMenuPanel.setVisible(false);
                 titleLabel.setVisible(false);
                 mainMenuPandaLabel.setVisible(false);
+                frame.repaint();
+            }
+        });
+
+
+
+        returnToMenuPanel.setBounds(10, 10, 180, 50);
+        returnToMenuPanel.add(returnToMenuButton);
+        returnToMenuButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.remove(addItemPanel);
+                frame.remove(removeItemPanel);
+                frame.remove(modifyItemPanel);
+                frame.remove(addcategoryPanel);
+                frame.remove(modifyCategoryPanel);
+                frame.remove(removeButtonPanel);
+                frame.remove(panel);
+                frame.remove(itemPanel);
+                frame.remove(pricePanel);
+                frame.remove(quantPanel);
+                frame.remove(bigPanel);
+                frame.remove(returnToMenuPanel);
+                mainMenuPanel.setVisible(true);
+                titleLabel.setVisible(true);
+                mainMenuPandaLabel.setVisible(true);
                 frame.repaint();
             }
         });
