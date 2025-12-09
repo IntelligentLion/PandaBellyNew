@@ -66,7 +66,7 @@ public class Main {
     });
 
     button.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-}
+    }
 
     public static void main(String[] args) throws IOException {
         categoryStorage storage = new categoryStorage();
@@ -216,20 +216,39 @@ public class Main {
         removeCategoryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String selectedCategory = JOptionPane.showInputDialog(frame, "Enter category name to remove:");
-                if(selectedCategory.equals("None")){
-                    Sounds.playError();
-                    JOptionPane.showMessageDialog(frame, "Cannot remove 'None' category.");
-                    return;
-                    // Exception handling
+                Sounds.playClick();
+                // Create a dropdown with all categories except "None"
+                JComboBox<String> removeCatDropdown = new JComboBox<>();
+                for (int i = 0; i < dropdown.getItemCount(); i++) {
+                    String cat = dropdown.getItemAt(i);
+                    if (!cat.equals("None")) {
+                        removeCatDropdown.addItem(cat);
+                    }
                 }
-                if (selectedCategory != null && !selectedCategory.trim().isEmpty()) {
-                    dropdown.removeItem(selectedCategory.trim());
-                    storage.removeCategory(selectedCategory.trim());
+                
+                if (removeCatDropdown.getItemCount() == 0) {
+                    Sounds.playError();
+                    JOptionPane.showMessageDialog(frame, "No categories to remove!");
+                    return;
+                }
+                
+                String selectedCategory = (String) JOptionPane.showInputDialog(frame, "Select category to remove:", "Remove Category", JOptionPane.QUESTION_MESSAGE, null, removeCatDropdown.getItemCount() > 0 ? getItems(removeCatDropdown) : null, removeCatDropdown.getItemAt(0));
+                
+                if (selectedCategory != null) {
+                    dropdown.removeItem(selectedCategory);
+                    storage.removeCategory(selectedCategory);
                     DataManager.saveData(storage);
                     Sounds.playSuccess();
                     Main.updateTableForSelectedCategory(dropdown, storage, model);
                 }
+            }
+            
+            private Object[] getItems(JComboBox<String> combo) {
+                Object[] items = new Object[combo.getItemCount()];
+                for (int i = 0; i < combo.getItemCount(); i++) {
+                    items[i] = combo.getItemAt(i);
+                }
+                return items;
             }
         });
 
@@ -244,6 +263,7 @@ public class Main {
         addcategory.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
                 String newCategory = JOptionPane.showInputDialog(frame, "Enter new category name:");
                 if (newCategory != null && !newCategory.trim().isEmpty()) {
                     String cat = newCategory.trim();
@@ -291,6 +311,7 @@ public class Main {
         modifyCategoryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
                 String oldCategory = JOptionPane.showInputDialog(frame, "Enter the category name to modify:");
                 if (oldCategory != null && !oldCategory.trim().isEmpty()) {
                     String newCategory = JOptionPane.showInputDialog(frame, "Enter the new category name:");
@@ -354,6 +375,7 @@ public class Main {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
                 if (CategoryField.getSelectedItem() == null) {
                         JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                         CategoryField.requestFocusInWindow();
@@ -475,6 +497,7 @@ public class Main {
         addItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
                 // Refresh the category dropdown with current categories
                 CategoryField.removeAllItems();
                 for (int i = 0; i < dropdown.getItemCount(); i++) {
@@ -519,6 +542,7 @@ public class Main {
         submitRemoveItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
                 if (removeCategoryDropdown.getSelectedItem() == null) {
                         JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                         removeCategoryDropdown.requestFocusInWindow();
@@ -561,6 +585,7 @@ public class Main {
         removeItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
                 // Refresh the category dropdown with current categories
                 removeCategoryDropdown.removeAllItems();
                 for (int i = 0; i < dropdown.getItemCount(); i++) {
@@ -617,6 +642,7 @@ public class Main {
         modifyItemSubmitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
                 if (modifyCategoryDropdown.getSelectedItem() == null) {
                         JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                         modifyCategoryDropdown.requestFocusInWindow();
@@ -675,6 +701,7 @@ public class Main {
         modifyItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
                 // Refresh the category dropdown with current categories
                 modifyCategoryDropdown.removeAllItems();
                 for (int i = 0; i < dropdown.getItemCount(); i++) {
