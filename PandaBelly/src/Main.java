@@ -682,6 +682,56 @@ public class Main {
         JTable restockTable = new JTable(restockModel);
         restockTable.setRowHeight(25);
         restockFrame.add(new JScrollPane(restockTable));
+        
+        // Analytics Button
+        JButton viewAnalyticsButton = new JButton("Analytics");
+        JPanel viewAnalyticsPanel = new JPanel();
+        viewAnalyticsPanel.setBounds(855, 540, 120, 50);
+        viewAnalyticsPanel.add(viewAnalyticsButton);
+        viewAnalyticsButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
+                
+                // Create category dropdown with "All" option
+                JComboBox<String> catDropdown = new JComboBox<>();
+                catDropdown.addItem("All");
+                for(int i = 0; i < dropdown.getItemCount(); i++) {
+                    catDropdown.addItem(dropdown.getItemAt(i));
+                }
+                
+                int choice = JOptionPane.showConfirmDialog(frame, catDropdown, "Select Category", JOptionPane.OK_CANCEL_OPTION);
+                if(choice != JOptionPane.OK_OPTION) return;
+                
+                String pick = (String) catDropdown.getSelectedItem();
+                
+                // Count items and value
+                int count = 0;
+                double value = 0;
+                String low = "";
+                
+                for(Storage s : storage.getMainStorage()) {
+                    if(pick.equals("All") || s.getCName().equals(pick)) {
+                        for(Item item : s.getCategory()) {
+                            count++;
+                            value += item.getPrice() * item.getQuantity();
+                            if(item.getQuantity() < 2) {
+                                low += item.getName() + " (" + item.getQuantity() + ")\n";
+                            }
+                        }
+                    }
+                }
+                
+                if(low.isEmpty()) low = "None";
+                
+                String msg = "Category: " + pick + "\n\n" +
+                             "Total Items: " + count + "\n" +
+                             "Total Value: $" + String.format("%.2f", value) + "\n\n" +
+                             "Low Stock (< 2):\n" + low;
+                
+                JOptionPane.showMessageDialog(frame, msg, "Analytics - " + pick, JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+        
         JButton viewRestockButton = new JButton("View Restock");
         JPanel viewRestockPanel = new JPanel();
         viewRestockPanel.setBounds(855, 600, 120, 50);
@@ -912,6 +962,7 @@ public class Main {
                 frame.add(bigPanel);
                 frame.add(returnToMenuPanel);
                 frame.add(viewRestockPanel);
+                frame.add(viewAnalyticsPanel);
                 frame.add(addToRestockPanel);
                 frame.add(removeItemFromRestockPanel);
                 frame.add(pandaLabel);
@@ -943,6 +994,7 @@ public class Main {
                 frame.remove(bigPanel);
                 frame.remove(returnToMenuPanel);
                 frame.remove(viewRestockPanel);
+                frame.remove(viewAnalyticsPanel);
                 frame.remove(addToRestockPanel);
                 frame.remove(removeItemFromRestockPanel);
                 frame.remove(pandaLabel);
@@ -959,6 +1011,7 @@ public class Main {
        styleButton(addcategory);
        styleButton(modifyCategoryButton);
        styleButton(removeCategoryButton);
+       styleButton(viewAnalyticsButton);
        
 
 
