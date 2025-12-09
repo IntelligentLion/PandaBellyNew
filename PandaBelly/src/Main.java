@@ -24,6 +24,16 @@ import java.awt.Font;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.table.TableColumn;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableRowSorter;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
+import java.text.NumberFormat;
+//import com.formdev.flatlaf.FlatLightLaf;
+//import com.formdev.flatlaf.FlatDarkLaf;
+
 
 //all gui components inside Main class
 public class Main {
@@ -84,6 +94,8 @@ public class Main {
         pandaLabel.setBounds(890, 10, 50, 50);
         frame.add(pandaLabel);
         
+                
+
         String[] options = {};
         JComboBox<String> dropdown = new JComboBox<>(options);
         dropdown.setPreferredSize(new Dimension(200, 30));
@@ -594,62 +606,10 @@ public class Main {
        styleButton(removeCategoryButton);
        
 
-        JToolBar tools = new JToolBar();
-        tools.setFloatable(false);
-        tools.setOpaque(false);
-        tools.setBorder(new EmptyBorder(8, 0, 0, 0));
-        tools.setBackground(new Color(0XF5F5F5));
-        tools.setLayout(new BoxLayout(tools, BoxLayout.X_AXIS));
-        topPanel.add(tools, BorderLayout.SOUTH);
-
 
         //tools.setBounds(0, 0, frame.getWidth(), 70);
         //frame.add(tools);
 
-        Dimension buttonSize = new Dimension(120, 40);
-        JButton[] buttons = {
-            addItemButton,
-            modifyItemButton,
-            removeItemButton,
-            addcategory,
-            modifyCategoryButton,
-            removeCategoryButton
-        };
-
-        for (JButton button : buttons) {
-            button.setPreferredSize(buttonSize);
-        }
-
-        tools.add(addItemButton);
-        tools.add(Box.createHorizontalStrut(10));
-        tools.add(modifyItemButton);
-        tools.add(Box.createHorizontalStrut(10));
-        tools.add(removeItemButton);
-
-        tools.addSeparator(new Dimension(20, 0));
-
-        JLabel categoryLabel = new JLabel("Category: ");
-        categoryLabel.setBorder(new EmptyBorder(0,10, 0, 5));
-        tools.add(categoryLabel);
-        dropdown.setMaximumSize(new Dimension(160, 30));
-        tools.add(dropdown);
-
-        tools.addSeparator(new Dimension(20, 0));
-        tools.add(addcategory);
-        tools.add(Box.createHorizontalStrut(10));
-        tools.add(modifyCategoryButton);
-        tools.add(Box.createHorizontalStrut(10));
-        tools.add(removeCategoryButton);
-
-        tools.add(Box.createHorizontalGlue());
-
-       
-        styleButton(addItemButton);
-        styleButton(removeItemButton);
-        styleButton(modifyItemButton);
-        styleButton(addcategory);
-        styleButton(removeCategoryButton);
-        styleButton(modifyCategoryButton);
 
 
 
