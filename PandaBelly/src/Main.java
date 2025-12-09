@@ -265,7 +265,7 @@ public class Main {
         addcategoryPanel.setBounds(350,50,200,50);
         addcategoryPanel.add(addcategory);
         frame.add(addcategoryPanel);
-        /* 
+
         addcategory.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -282,7 +282,7 @@ public class Main {
                 }
             }
         });
-        */
+
         addcategory.setContentAreaFilled(false);
         addcategory.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -496,7 +496,7 @@ public class Main {
         addItemPanel.setBounds(175, 10, 200, 50);
         addItemPanel.add(addItemButton);
         frame.add(addItemPanel);
-        /* 
+
         addItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -508,7 +508,7 @@ public class Main {
                 addItemFrame.setVisible(true);
             }   
         });
-        */
+   
         addItemButton.setContentAreaFilled(false);
         addItemButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
