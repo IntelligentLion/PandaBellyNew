@@ -75,7 +75,7 @@ public class Main {
         ImageIcon pandaIcon = new ImageIcon("PandaBelly/src/panda.png");
         Image scaledPanda = pandaIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         JLabel pandaLabel = new JLabel(new ImageIcon(scaledPanda));
-        pandaLabel.setBounds(890, 10, 50, 50);
+        pandaLabel.setBounds(890, 55, 50, 50);
         frame.add(pandaLabel);
         
 
@@ -720,7 +720,7 @@ public class Main {
         frame.add(titleLabel);
         Image mainMenuPanda = new ImageIcon("PandaBelly/src/panda.png").getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
         JLabel mainMenuPandaLabel = new JLabel(new ImageIcon(mainMenuPanda));
-        mainMenuPandaLabel.setBounds(400, 250, 200, 200);
+        mainMenuPandaLabel.setBounds(400, 350, 200, 200);
         frame.add(mainMenuPandaLabel);
 
         JButton returnToMenuButton = new JButton("Back to \nMain Menu");
