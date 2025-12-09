@@ -609,7 +609,7 @@ public class Main {
         JPanel mainMenuPanel = new JPanel();
         mainMenuPanel.setBounds(400, 300, 200, 50);
         mainMenuPanel.add(mainMenuButton);
-        frame.add(mainMenuButton); 
+        frame.add(mainMenuPanel); 
         mainMenuButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -624,7 +624,7 @@ public class Main {
                 frame.add(pricePanel);
                 frame.add(quantPanel);
                 frame.add(bigPanel);
-                mainMenuButton.setVisible(false);
+                mainMenuPanel.setVisible(false);
                 frame.repaint();
             }
         });
