@@ -683,9 +683,9 @@ public class Main {
         JTable restockTable = new JTable(restockModel);
         restockTable.setRowHeight(25);
         restockFrame.add(new JScrollPane(restockTable));
-        JButton viewRestockButton = new JButton("View Restock List");
+        JButton viewRestockButton = new JButton("View Restock");
         JPanel viewRestockPanel = new JPanel();
-        viewRestockPanel.setBounds(800, 10, 200, 50);
+        viewRestockPanel.setBounds(855, 600, 120, 50);
         viewRestockPanel.add(viewRestockButton);
         viewRestockButton.addActionListener(new ActionListener() {
             @Override
@@ -723,7 +723,7 @@ public class Main {
         mainMenuPandaLabel.setBounds(400, 350, 200, 200);
         frame.add(mainMenuPandaLabel);
 
-        JButton returnToMenuButton = new JButton("Back to \nMain Menu");
+        JButton returnToMenuButton = new JButton("Back to Main Menu");
         JPanel returnToMenuPanel = new JPanel();
         JButton mainMenuButton = new JButton("Enter PandaBelly");
         JPanel mainMenuPanel = new JPanel();
