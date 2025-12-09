@@ -102,7 +102,7 @@ public class Main {
         pandaLabel.setBounds(890, 10, 50, 50);
         frame.add(pandaLabel);
         
-                
+
 
         String[] options = {};
         JComboBox<String> dropdown = new JComboBox<>(options);
@@ -114,7 +114,7 @@ public class Main {
         JPanel panel = new JPanel();
         panel.add(dropdown);
         panel.setBounds(175,50,200,50);
-        frame.add(panel);
+
         panel.setOpaque(true);
 
         //these are the 3 lil pannels at the top
@@ -122,7 +122,7 @@ public class Main {
         JPanel itemPanel = new JPanel();
         itemPanel.setBorder(BorderFactory.createEtchedBorder());
         itemPanel.setBounds(150, 100, 700/3, 100);
-        frame.add(itemPanel);
+
         itemPanel.setLayout(new BorderLayout());
         JLabel itemLabel = new JLabel("Items", SwingConstants.CENTER);
         itemLabel.setSize(100, 80);
@@ -131,7 +131,7 @@ public class Main {
         JPanel pricePanel = new JPanel();
         pricePanel.setBorder(BorderFactory.createEtchedBorder());
         pricePanel.setBounds(150+1400/3, 100, 700/3, 100);
-        frame.add(pricePanel);
+
         pricePanel.setLayout(new BorderLayout());
         JLabel priceLabel1 = new JLabel("Price", SwingConstants.CENTER);
         priceLabel1.setSize(100, 80);
@@ -141,7 +141,7 @@ public class Main {
         JPanel quantPanel = new JPanel();
         quantPanel.setBorder(BorderFactory.createEtchedBorder());
         quantPanel.setBounds(150+700/3, 100, 700/3, 100);
-        frame.add(quantPanel);
+
         quantPanel.setLayout(new BorderLayout());
         JLabel quantLabel1 = new JLabel("Quantity", SwingConstants.CENTER);
         quantLabel1.setSize(100, 80);
@@ -152,7 +152,7 @@ public class Main {
 
         JPanel bigPanel = new JPanel();
         bigPanel.setBounds(150, 200, 700, 450);
-        frame.add(bigPanel);
+
         bigPanel.setBorder(BorderFactory.createEtchedBorder());
         bigPanel.setOpaque(false); // show animated background behind the table
          
@@ -166,7 +166,7 @@ public class Main {
         JPanel removeButtonPanel = new JPanel();
         removeButtonPanel.setBounds(700,50,180,50);
         removeButtonPanel.add(removeCategoryButton);
-        frame.add(removeButtonPanel);
+
         removeCategoryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -212,7 +212,7 @@ public class Main {
         JPanel addcategoryPanel = new JPanel();
         addcategoryPanel.setBounds(350,50,200,50);
         addcategoryPanel.add(addcategory);
-        frame.add(addcategoryPanel);
+
 
         addcategory.addActionListener(new ActionListener() {
             @Override
@@ -236,7 +236,7 @@ public class Main {
         JPanel modifyCategoryPanel = new JPanel();
         modifyCategoryPanel.setBounds(515, 50, 200, 50);
         modifyCategoryPanel.add(modifyCategoryButton);
-        frame.add(modifyCategoryPanel);
+
         modifyCategoryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -408,7 +408,7 @@ public class Main {
         JPanel addItemPanel = new JPanel();
         addItemPanel.setBounds(175, 10, 200, 50);
         addItemPanel.add(addItemButton);
-        frame.add(addItemPanel);
+
 
         addItemButton.addActionListener(new ActionListener() {
             @Override
@@ -485,7 +485,7 @@ public class Main {
         JPanel removeItemPanel = new JPanel();
         removeItemPanel.setBounds(600, 10, 200, 50);
         removeItemPanel.add(removeItemButton);
-        frame.add(removeItemPanel);
+
         removeItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -603,7 +603,7 @@ public class Main {
                 modifyItemFrame.setVisible(true);
             }   
         });
-        frame.add(modifyItemPanel);
+
         modifyItemButton.setContentAreaFilled(false);
         modifyItemButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -613,6 +613,28 @@ public class Main {
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 modifyItemButton.setContentAreaFilled(false);
+            }
+        });
+
+        JButton mainMenuButton = new JButton("Enter PandaBelly");
+        mainMenuButton.setBounds(400, 300, 200, 50);
+        frame.add(mainMenuButton); 
+        mainMenuButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.add(addItemPanel);
+                frame.add(removeItemPanel);
+                frame.add(modifyItemPanel);
+                frame.add(addcategoryPanel);
+                frame.add(modifyCategoryPanel);
+                frame.add(removeButtonPanel);
+                frame.add(panel);
+                frame.add(itemPanel);
+                frame.add(pricePanel);
+                frame.add(quantPanel);
+                frame.add(bigPanel);
+                mainMenuButton.setVisible(false);
+                frame.repaint();
             }
         });
 
