@@ -31,6 +31,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 //import com.formdev.flatlaf.FlatLightLaf;
 //import com.formdev.flatlaf.FlatDarkLaf;
 
@@ -72,6 +73,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         categoryStorage storage = new categoryStorage();
         String[] columnNames = {"Items", "Quantity", "Price"};
+        ArrayList<Item> restock = new ArrayList<Item>();
         DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -556,6 +558,40 @@ public class Main {
                     JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     newQuantityField.requestFocusInWindow();
                 }
+                //exceptions
+                try {
+                    Double.parseDouble(newPriceField.getText());
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Enter valid price!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    newPriceField.requestFocusInWindow();
+                    return;
+                }
+                if(Double.parseDouble(newPriceField.getText()) < 0){
+                    JOptionPane.showMessageDialog(null, "Price cannot be negative!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    newPriceField.requestFocusInWindow();
+                    return;
+                }
+                if(newPriceField.getText().contains(".")){
+                    String[] parts = newPriceField.getText().split("\\.");
+                    if(parts.length == 2 && parts[1].length() > 2){
+                        JOptionPane.showMessageDialog(null, "Price can only have two decimal places!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                        newPriceField.requestFocusInWindow();
+                        return;
+                    }
+                }
+                try {
+                    Integer.parseInt(newQuantityField.getText());
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Enter valid quantity!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    newQuantityField.requestFocusInWindow();
+                    return;
+                }
+                if(Integer.parseInt(newQuantityField.getText()) < 0){
+                    JOptionPane.showMessageDialog(null, "Quantity cannot be negative!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    newQuantityField.requestFocusInWindow();
+                    return;
+                }
+
                 else {
                     String categoryName = (String) modifyCategoryDropdown.getSelectedItem();
                     String itemName = modifyItemField.getText();
@@ -569,6 +605,19 @@ public class Main {
                     if (selectedStorage != null) {
                         boolean modified = selectedStorage.modifyItem(itemName, newNameField.getText(), Double.parseDouble(newPriceField.getText()), Integer.parseInt(newQuantityField.getText()));
                         if (modified) {
+                            if(Integer.parseInt(newQuantityField.getText()) == 0){
+                                int choice = JOptionPane.showConfirmDialog(frame, "Would you like to restock this item? Item Quantity is 0", "Restock Item", JOptionPane.YES_NO_OPTION);
+                                if (choice == JOptionPane.YES_OPTION) {
+                                    // Find the Item object by name and add to restock list
+                                    for (Item item : selectedStorage.getCategory()) {
+                                        if (item.getName().equalsIgnoreCase(newNameField.getText())) {
+                                            restock.add(item);
+                                            break;
+                                        }
+                                    }
+                                    JOptionPane.showMessageDialog(frame, "Item added to restock list.");
+                                }
+                            }
                             DataManager.saveData(storage);
                             Sounds.playSuccess();
                             JOptionPane.showMessageDialog(null, "Item modified successfully!");
@@ -603,6 +652,47 @@ public class Main {
                 modifyItemFrame.setVisible(true);
             }   
         });
+
+
+        JFrame restockFrame = new JFrame("Restock List");
+        restockFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        restockFrame.setSize(600, 400);
+        String[] restockColumnNames = {"Category", "Item Name"};
+        DefaultTableModel restockModel = new DefaultTableModel(restockColumnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        JTable restockTable = new JTable(restockModel);
+        restockTable.setRowHeight(25);
+        restockFrame.add(new JScrollPane(restockTable));
+        JButton viewRestockButton = new JButton("View Restock List");
+        JPanel viewRestockPanel = new JPanel();
+        viewRestockPanel.setBounds(800, 10, 200, 50);
+        viewRestockPanel.add(viewRestockButton);
+        viewRestockButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
+                restockModel.setRowCount(0);
+                for(Item item : restock){
+                    String category = "Unknown";
+                    for(Storage storageUnit : storage.getMainStorage()) {
+                        for(Item storageItem : storageUnit.getCategory()) {
+                            if(storageItem.getName().equals(item.getName())) {
+                                category = storageUnit.getCName();
+                                break;
+                            }
+                        }
+                    }
+                    restockModel.addRow(new Object[]{category, item.getName()});
+                }
+                restockFrame.setVisible(true);
+            }
+        });
+        
+
         JLabel titleLabel = new JLabel("Welcome to PandaBelly!", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Chaucer", Font.BOLD, 36));
         titleLabel.setBounds(250, 150, 500, 50);
@@ -634,6 +724,7 @@ public class Main {
                 frame.add(quantPanel);
                 frame.add(bigPanel);
                 frame.add(returnToMenuPanel);
+                frame.add(viewRestockPanel);
                 mainMenuPanel.setVisible(false);
                 titleLabel.setVisible(false);
                 mainMenuPandaLabel.setVisible(false);
@@ -660,6 +751,7 @@ public class Main {
                 frame.remove(quantPanel);
                 frame.remove(bigPanel);
                 frame.remove(returnToMenuPanel);
+                frame.remove(viewRestockPanel);
                 mainMenuPanel.setVisible(true);
                 titleLabel.setVisible(true);
                 mainMenuPandaLabel.setVisible(true);
@@ -734,5 +826,5 @@ public class Main {
     }
 
 }
-    
+
 
