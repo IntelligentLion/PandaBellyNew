@@ -606,7 +606,9 @@ public class Main {
 
 
         JButton mainMenuButton = new JButton("Enter PandaBelly");
-        mainMenuButton.setBounds(400, 300, 200, 50);
+        JPanel mainMenuPanel = new JPanel();
+        mainMenuPanel.setBounds(400, 300, 200, 50);
+        mainMenuPanel.add(mainMenuButton);
         frame.add(mainMenuButton); 
         mainMenuButton.addActionListener(new ActionListener(){
             @Override
