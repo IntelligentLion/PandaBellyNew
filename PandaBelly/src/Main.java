@@ -51,7 +51,8 @@ public class Main {
     button.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
     button.setContentAreaFilled(false);
     button.setOpaque(true);
-    button.setBackground(new Color(0XEEEEEE));
+    button.setBackground(new Color(0xADD8E6)); // Light blue color
+    button.setForeground(Color.BLACK);
     button.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseEntered(MouseEvent e) {
