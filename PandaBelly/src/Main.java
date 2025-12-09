@@ -273,10 +273,7 @@ public class Main {
 //Arthur
 
         JButton addcategory = new JButton("Add Category");
-        JPanel addcategoryPanel = new JPanel();
-        addcategoryPanel.setBounds(350,50,200,50);
-        addcategoryPanel.add(addcategory);
-        frame.add(addcategoryPanel);
+
 
         addcategory.addActionListener(new ActionListener() {
             @Override
@@ -504,10 +501,7 @@ public class Main {
 
 //Arthur:Add Item button and its panel
         JButton addItemButton = new JButton("Add Item");
-        JPanel addItemPanel = new JPanel();
-        addItemPanel.setBounds(175, 10, 200, 50);
-        addItemPanel.add(addItemButton);
-        frame.add(addItemPanel);
+
 
         addItemButton.addActionListener(new ActionListener() {
             @Override
@@ -590,11 +584,8 @@ public class Main {
                 }
             }   
         });
-//Arthur: Remove Item button and its panel
-        JPanel removeItemPanel = new JPanel();
-        removeItemPanel.setBounds(600, 10, 200, 50);
-        removeItemPanel.add(removeItemButton);
-        frame.add(removeItemPanel);
+//Arthur: Remove Item button
+
         removeItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -619,7 +610,7 @@ public class Main {
         });
 
         JButton modifyItemButton = new JButton("Modify Item");
-        JPanel modifyItemPanel = new JPanel();
+
         JFrame modifyItemFrame = new JFrame("Modify Item");
         modifyItemFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         modifyItemFrame.setSize(400, 400);
@@ -707,8 +698,7 @@ public class Main {
             }
         });
 
-        modifyItemPanel.setBounds(400, 10, 200, 50);
-        modifyItemPanel.add(modifyItemButton);
+
         modifyItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -720,7 +710,7 @@ public class Main {
                 modifyItemFrame.setVisible(true);
             }   
         });
-        frame.add(modifyItemPanel);
+
         modifyItemButton.setContentAreaFilled(false);
         modifyItemButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
