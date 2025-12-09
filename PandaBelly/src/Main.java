@@ -12,6 +12,8 @@ import java.awt.BorderLayout;
 import java.awt.Image;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+
 import java.awt.GradientPaint;
 import java.awt.event.MouseEvent;
 import java.awt.Graphics;
@@ -21,12 +23,49 @@ import java.awt.geom.Point2D;
 import java.awt.RadialGradientPaint;
 import java.awt.event.MouseAdapter;
 import java.awt.Font;
+import javax.swing.table.TableColumn;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableRowSorter;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
+import java.text.NumberFormat;
+//import com.formdev.flatlaf.FlatLightLaf;
+//import com.formdev.flatlaf.FlatDarkLaf;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
+
 //all gui components inside Main class
 public class Main {
+
+    private static void styleButton(JButton button) {
+    try {
+        UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+        UIManager.put("defaultFont", new Font("SansSerif", Font.PLAIN, 13));
+    } catch (Exception e) {
+        e.printStackTrace(); // if Nimbus isn't available, it will just fall back
+    }
+
+    button.setFocusPainted(false);
+    button.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+    button.setContentAreaFilled(false);
+    button.setOpaque(true);
+    button.setBackground(new Color(0XEEEEEE));
+    button.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            button.setBackground(new Color(255, 100, 100));
+        }
+        @Override
+        public void mouseExited(MouseEvent e) {
+            button.setBackground(new Color(0xEEEEEE));
+        }
+    });
+
+    button.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+}
 
     public static void main(String[] args) throws IOException {
         categoryStorage storage = new categoryStorage();
@@ -35,8 +74,23 @@ public class Main {
         JTable table = new JTable(model);
         table.setRowHeight(30);
 
+        table.setRowHeight(24);
+        table.setFillsViewportHeight(true);
+        table.setShowGrid(false);
+        table.setIntercellSpacing(new Dimension(0, 0));
+
+        // header styling
+        JTableHeader header = table.getTableHeader();
+        header.setFont(header.getFont().deriveFont(Font.BOLD, 14f));
+        header.setReorderingAllowed(false);
+
         UIManager.put("Label.font", new Font("Chaucer", Font.PLAIN, 25));
+        //UIManager.setLookAndFeel(new FlatLightLaf());
  
+
+        UIManager.put("Panel.background", new Color(0xF5F5F5));
+        UIManager.put("Table.background", Color.WHITE);
+        UIManager.put("Table.alternateRowColor", new Color(0xFAFAFA));
 
 
         //Ritvin's attempt to put a gif background
@@ -48,7 +102,13 @@ public class Main {
         frame.setLocationRelativeTo(null); // Center the frame
         frame.setBackground(java.awt.Color.BLUE);
         frame.setIconImage(new ImageIcon("PandaBelly/src/panda.png").getImage());
-        
+
+        JPanel topBar = new JPanel();
+        topBar.setLayout(new BoxLayout(topBar, BoxLayout.X_AXIS));
+        topBar.setBorder(new EmptyBorder(10, 15, 10, 15));
+        topBar.setBackground(new Color(0XF5F5F5));
+        topBar.setBounds(0, 0, 1000, 60);
+
         // ryan: panda image in top-right corner 
         ImageIcon pandaIcon = new ImageIcon("PandaBelly/src/panda.png");
         Image scaledPanda = pandaIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
@@ -71,6 +131,7 @@ public class Main {
 
         //these are the 3 lil pannels at the top
 
+        /* 
         JPanel itemPanel = new JPanel();
         itemPanel.setBorder(BorderFactory.createEtchedBorder());
         itemPanel.setBounds(150, 100, 700/3, 100);
@@ -100,15 +161,34 @@ public class Main {
         quantPanel.add(quantLabel1, BorderLayout.CENTER);
         quantPanel.setBackground(java.awt.Color.WHITE);
         //panels end, we got rid of the SKU idea btw
+        */
 
+        JPanel headers = new JPanel(new GridLayout(1,3));
+        headers.setBounds(150, 100, 700, 40);
+        headers.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(0XCCCCCC)));
+        headers.setBackground(Color.WHITE);
+
+        Font headersFont = new Font("Chaucer", Font.BOLD, 160);
+
+        JLabel itemLabel = new JLabel("Items", SwingConstants.CENTER);
+        itemLabel.setFont(headersFont);
+        headers.add(itemLabel); 
+
+        JLabel quantLabel1 = new JLabel("Quantity", SwingConstants.CENTER);
+        quantLabel1.setFont(headersFont);
+        headers.add(quantLabel1);
+
+        JLabel priceLabel1 = new JLabel("Price", SwingConstants.CENTER);
+        priceLabel1.setFont(headersFont);
+        headers.add(priceLabel1);
 
         JPanel bigPanel = new JPanel();
-        bigPanel.setBounds(150, 200, 700, 450);
+        bigPanel.setBounds(150, 120, 700, 530);
         frame.add(bigPanel);
         bigPanel.setBorder(BorderFactory.createEtchedBorder());
         bigPanel.setOpaque(false); // show animated background behind the table
          
-         itemPanel.setBackground(java.awt.Color.WHITE);
+         //itemPanel.setBackground(java.awt.Color.WHITE);
         // make button-holder panels transparent so the gradient is visible
         // (repeat for other small panels if desired)
         
@@ -119,6 +199,7 @@ public class Main {
         removeButtonPanel.setBounds(700,50,180,50);
         removeButtonPanel.add(removeCategoryButton);
         frame.add(removeButtonPanel);
+        /* 
         removeCategoryButton.setContentAreaFilled(false);
         removeCategoryButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -130,6 +211,7 @@ public class Main {
                 removeCategoryButton.setContentAreaFilled(false);
             }
         });
+        */
         removeCategoryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -176,6 +258,7 @@ public class Main {
         addcategoryPanel.setBounds(350,50,200,50);
         addcategoryPanel.add(addcategory);
         frame.add(addcategoryPanel);
+        /* 
         addcategory.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -193,6 +276,7 @@ public class Main {
                 }
             }
         });
+        */
         addcategory.setContentAreaFilled(false);
         addcategory.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -210,6 +294,7 @@ public class Main {
         modifyCategoryPanel.setBounds(515, 50, 200, 50);
         modifyCategoryPanel.add(modifyCategoryButton);
         frame.add(modifyCategoryPanel);
+        /* 
         modifyCategoryButton.setContentAreaFilled(false);
         modifyCategoryButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -221,6 +306,7 @@ public class Main {
                 modifyCategoryButton.setContentAreaFilled(false);
             }
         });
+        */
         modifyCategoryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -406,6 +492,7 @@ public class Main {
         addItemPanel.setBounds(175, 10, 200, 50);
         addItemPanel.add(addItemButton);
         frame.add(addItemPanel);
+        /* 
         addItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -418,6 +505,7 @@ public class Main {
                 addItemFrame.setVisible(true);
             }   
         });
+        */
         addItemButton.setContentAreaFilled(false);
         addItemButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -634,8 +722,31 @@ public class Main {
             }
         });
 
+       styleButton(addItemButton);
+       styleButton(modifyItemButton);
+       styleButton(removeItemButton);
+       styleButton(addcategory);
+       styleButton(modifyCategoryButton);
+       styleButton(removeCategoryButton);
        
-       
+       topBar.add(addItemButton);
+       topBar.add(Box.createHorizontalStrut(10));
+       topBar.add(modifyItemButton);
+       topBar.add(Box.createHorizontalStrut(10));
+       topBar.add(removeItemButton);
+
+       topBar.add(Box.createHorizontalStrut(40));
+       topBar.add(new JLabel("Category: "));
+       topBar.add(Box.createHorizontalStrut(5));
+       topBar.add(dropdown);
+       topBar.add(Box.createHorizontalStrut(10));
+       topBar.add(addcategory);
+       topBar.add(Box.createHorizontalStrut(10));
+       topBar.add(modifyCategoryButton);
+       topBar.add(Box.createHorizontalStrut(10));
+       topBar.add(removeCategoryButton);
+
+       frame.add(topBar);
 
 
 
