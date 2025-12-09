@@ -62,7 +62,7 @@ public class Main {
         }
         @Override
         public void mouseExited(MouseEvent e) {
-            button.setBackground(new Color(0xEEEEEE));
+            button.setBackground(new Color(0xADD8E6));
         }
     });
 
