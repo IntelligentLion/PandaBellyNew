@@ -104,12 +104,6 @@ public class Main {
         frame.setBackground(java.awt.Color.BLUE);
         frame.setIconImage(new ImageIcon("PandaBelly/src/panda.png").getImage());
 
-        JPanel topBar = new JPanel();
-        topBar.setLayout(new BoxLayout(topBar, BoxLayout.X_AXIS));
-        topBar.setBorder(new EmptyBorder(10, 15, 10, 15));
-        topBar.setBackground(new Color(0XF5F5F5));
-        topBar.setBounds(0, 0, 1000, 60);
-
         // ryan: panda image in top-right corner 
         ImageIcon pandaIcon = new ImageIcon("PandaBelly/src/panda.png");
         Image scaledPanda = pandaIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
@@ -728,24 +722,6 @@ public class Main {
        styleButton(modifyCategoryButton);
        styleButton(removeCategoryButton);
        
-       topBar.add(addItemButton);
-       topBar.add(Box.createHorizontalStrut(10));
-       topBar.add(modifyItemButton);
-       topBar.add(Box.createHorizontalStrut(10));
-       topBar.add(removeItemButton);
-
-       topBar.add(Box.createHorizontalStrut(40));
-       topBar.add(new JLabel("Category: "));
-       topBar.add(Box.createHorizontalStrut(5));
-       topBar.add(dropdown);
-       topBar.add(Box.createHorizontalStrut(10));
-       topBar.add(addcategory);
-       topBar.add(Box.createHorizontalStrut(10));
-       topBar.add(modifyCategoryButton);
-       topBar.add(Box.createHorizontalStrut(10));
-       topBar.add(removeCategoryButton);
-
-       frame.add(topBar);
 
         JToolBar tools = new JToolBar();
         tools.setFloatable(false);
@@ -755,8 +731,9 @@ public class Main {
         tools.setLayout(new BoxLayout(tools, BoxLayout.X_AXIS));
         topPanel.add(tools, BorderLayout.SOUTH);
 
-        tools.setBounds(0, 0, frame.getWidth(), 70);
-        frame.add(tools);
+
+        //tools.setBounds(0, 0, frame.getWidth(), 70);
+        //frame.add(tools);
 
         Dimension buttonSize = new Dimension(120, 40);
         JButton[] buttons = {
