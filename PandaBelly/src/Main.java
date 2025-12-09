@@ -40,20 +40,14 @@ public class Main {
 
 
     private static void styleButton(JButton button) {
-        categoryStorage storage = new categoryStorage();
-        String[] columnNames = {"Items", "Quantity", "Price"};
+
     try {
         UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         UIManager.put("defaultFont", new Font("SansSerif", Font.PLAIN, 13));
     } catch (Exception e) {
         e.printStackTrace(); // if Nimbus isn't available, it will just fall back
     }
-    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+
 
     button.setFocusPainted(false);
     button.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
@@ -78,7 +72,12 @@ public class Main {
     public static void main(String[] args) throws IOException {
         categoryStorage storage = new categoryStorage();
         String[] columnNames = {"Items", "Quantity", "Price"};
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Make cells non-editable
+            }
+        };
         JTable table = new JTable(model);
         table.setRowHeight(30);
 
