@@ -712,6 +712,172 @@ public class Main {
                 restockFrame.setVisible(true);
             }
         });
+
+        JButton addToRestockButton = new JButton("Add to Restock");
+        JPanel addToRestockPanel = new JPanel();
+        addToRestockPanel.setBounds(850, 460, 140, 50);
+        addToRestockPanel.add(addToRestockButton);
+        JFrame addToRestockFrame = new JFrame("Add to Restock");
+        addToRestockFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        addToRestockFrame.setSize(400, 200);
+        addToRestockFrame.setLayout(new GridLayout(3, 2));
+        JLabel addRestockCategoryLabel = new JLabel("Category:");
+        JComboBox<String> addRestockCategoryDropdown = new JComboBox<>();
+        for (int i = 0; i < dropdown.getItemCount(); i++) {
+            addRestockCategoryDropdown.addItem(dropdown.getItemAt(i));
+        }
+        addToRestockFrame.add(addRestockCategoryLabel);
+        addToRestockFrame.add(addRestockCategoryDropdown);
+        JLabel addRestockItemLabel = new JLabel("Item Name:");
+        JTextField addRestockItemField = new JTextField();
+        addToRestockFrame.add(addRestockItemLabel);
+        addToRestockFrame.add(addRestockItemField);
+        JButton addRestockSubmitButton = new JButton("Submit");
+        addToRestockFrame.add(addRestockSubmitButton);
+        addToRestockButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
+                // Refresh the category dropdown with current categories
+                addRestockCategoryDropdown.removeAllItems();
+                for (int i = 0; i < dropdown.getItemCount(); i++) {
+                    addRestockCategoryDropdown.addItem(dropdown.getItemAt(i));
+                }
+                addRestockItemField.setText("");
+                addToRestockFrame.setVisible(true);
+            }   
+        });
+        addRestockSubmitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
+                if (addRestockCategoryDropdown.getSelectedItem() == null) {
+                        Sounds.playError();
+                        JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                        addRestockCategoryDropdown.requestFocusInWindow();
+                    }
+                else if (addRestockItemField.getText().isEmpty()) {
+                    Sounds.playError();
+                    JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    addRestockItemField.requestFocusInWindow();
+                }
+                else {
+                    String categoryName = (String) addRestockCategoryDropdown.getSelectedItem();
+                    String itemName = addRestockItemField.getText();
+                    Storage selectedStorage = null;
+                    for (int i = 0; i < storage.getMainStorage().size(); i++) {
+                        if (storage.getMainStorage().get(i).getCName().equals(categoryName)) {
+                            selectedStorage = storage.getMainStorage().get(i);
+                            break;
+                        }
+                    }
+                    if (selectedStorage != null) {
+                        for (Item item : selectedStorage.getCategory()) {
+                            if (item.getName().equalsIgnoreCase(itemName)) {
+                                item.setRestockNeeded(true);
+                                // avoid duplicate entries
+                                boolean already = false;
+                                for (Item r : restock) {
+                                    if (r.getName().equalsIgnoreCase(item.getName())) { already = true; break; }
+                                }
+                                if (!already) restock.add(item);
+                                DataManager.saveData(storage);
+                                Sounds.playSuccess();
+                                JOptionPane.showMessageDialog(null, "Item added to restock list!");
+                                addRestockItemField.setText("");
+                                addToRestockFrame.setVisible(false);
+                                return;
+                            }
+                        }
+                        Sounds.playError();
+                        JOptionPane.showMessageDialog(null, "Item not found in the specified category!", "Error", JOptionPane.ERROR_MESSAGE);
+                        addRestockItemField.requestFocusInWindow();
+                    }
+                }
+            }   
+        });
+
+        JButton removeItemFromRestockButton = new JButton("<html>Remove from<br>Restock</html>");
+        JPanel removeItemFromRestockPanel = new JPanel();   
+        removeItemFromRestockPanel.setBounds(825, 520, 180, 100);
+        removeItemFromRestockPanel.add(removeItemFromRestockButton);
+        JFrame removeFromRestockFrame = new JFrame("Remove from Restock");
+        removeFromRestockFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        removeFromRestockFrame.setSize(400, 200);
+        removeFromRestockFrame.setLayout(new GridLayout(3, 2));
+        JLabel removeRestockCategoryLabel = new JLabel("Category:");
+        JComboBox<String> removeRestockCategoryDropdown = new JComboBox<>();
+        for (int i = 0; i < dropdown.getItemCount(); i++) {
+            removeRestockCategoryDropdown.addItem(dropdown.getItemAt(i));
+        }
+        removeFromRestockFrame.add(removeRestockCategoryLabel);
+        removeFromRestockFrame.add(removeRestockCategoryDropdown);
+        JLabel removeRestockItemLabel = new JLabel("Item Name:");
+        JTextField removeRestockItemField = new JTextField();
+        removeFromRestockFrame.add(removeRestockItemLabel);
+
+        removeFromRestockFrame.add(removeRestockItemField);
+        JButton removeRestockSubmitButton = new JButton("Submit");
+        removeFromRestockFrame.add(removeRestockSubmitButton);
+        removeItemFromRestockButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
+                // Refresh the category dropdown with current categories
+                removeRestockCategoryDropdown.removeAllItems();
+                for (int i = 0; i < dropdown.getItemCount(); i++) {
+                    removeRestockCategoryDropdown.addItem(dropdown.getItemAt(i));
+                }
+                removeRestockItemField.setText("");
+                removeFromRestockFrame.setVisible(true);
+            }   
+        });
+        removeRestockSubmitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
+                if (removeRestockCategoryDropdown.getSelectedItem() == null) {
+                        Sounds.playError();
+                        JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                        removeRestockCategoryDropdown.requestFocusInWindow();
+                    }
+                else if (removeRestockItemField.getText().isEmpty()) {
+                    Sounds.playError();
+                    JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    removeRestockItemField.requestFocusInWindow();
+                }
+                else {
+                    String categoryName = (String) removeRestockCategoryDropdown.getSelectedItem();
+                    String itemName = removeRestockItemField.getText();
+                    Storage selectedStorage = null;
+                    for (int i = 0; i < storage.getMainStorage().size(); i++) {
+                        if (storage.getMainStorage().get(i).getCName().equals(categoryName)) {
+                            selectedStorage = storage.getMainStorage().get(i);
+                            break;
+                        }
+                    }
+                    if (selectedStorage != null) {
+                        for (Item item : selectedStorage.getCategory()) {
+                            if (item.getName().equalsIgnoreCase(itemName)) {
+                                item.setRestockNeeded(false);
+                                // remove from restock list
+                                restock.removeIf(r -> r.getName().equalsIgnoreCase(item.getName()));
+                                DataManager.saveData(storage);
+                                Sounds.playSuccess();
+                                JOptionPane.showMessageDialog(null, "Item removed from restock list!");
+                                removeRestockItemField.setText("");
+                                removeFromRestockFrame.setVisible(false);
+                                return;
+                            }
+                        }
+                        Sounds.playError();
+                        JOptionPane.showMessageDialog(null, "Item not found in the specified category!", "Error", JOptionPane.ERROR_MESSAGE);
+                        removeRestockItemField.requestFocusInWindow();
+                    }
+                }
+            }   
+        });
+
         
 
         JLabel titleLabel = new JLabel("Welcome to PandaBelly!", SwingConstants.CENTER);
@@ -747,6 +913,8 @@ public class Main {
                 frame.add(bigPanel);
                 frame.add(returnToMenuPanel);
                 frame.add(viewRestockPanel);
+                frame.add(addToRestockPanel);
+                frame.add(removeItemFromRestockPanel);
                 mainMenuPanel.setVisible(false);
                 titleLabel.setVisible(false);
                 mainMenuPandaLabel.setVisible(false);
@@ -775,6 +943,8 @@ public class Main {
                 frame.remove(bigPanel);
                 frame.remove(returnToMenuPanel);
                 frame.remove(viewRestockPanel);
+                frame.remove(addToRestockPanel);
+                frame.remove(removeItemFromRestockPanel);
                 mainMenuPanel.setVisible(true);
                 titleLabel.setVisible(true);
                 mainMenuPandaLabel.setVisible(true);
