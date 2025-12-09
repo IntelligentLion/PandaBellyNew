@@ -28,6 +28,34 @@ import java.awt.event.ActionListener;
 //all gui components inside Main class
 public class Main {
 
+
+    private static void styleButton(JButton button) {
+    try {
+        UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+        UIManager.put("defaultFont", new Font("SansSerif", Font.PLAIN, 13));
+    } catch (Exception e) {
+        e.printStackTrace(); // if Nimbus isn't available, it will just fall back
+    }
+
+    button.setFocusPainted(false);
+    button.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+    button.setContentAreaFilled(false);
+    button.setOpaque(true);
+    button.setBackground(new Color(0XEEEEEE));
+    button.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            button.setBackground(new Color(255, 100, 100));
+        }
+        @Override
+        public void mouseExited(MouseEvent e) {
+            button.setBackground(new Color(0xEEEEEE));
+        }
+    });
+
+    button.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    }
+
     public static void main(String[] args) throws IOException {
         categoryStorage storage = new categoryStorage();
         String[] columnNames = {"Items", "Quantity", "Price"};
@@ -616,7 +644,12 @@ public class Main {
         tools.add(Box.createHorizontalGlue());
 
        
-
+        styleButton(addItemButton);
+        styleButton(removeItemButton);
+        styleButton(modifyItemButton);
+        styleButton(addcategory);
+        styleButton(removeCategoryButton);
+        styleButton(modifyCategoryButton);
 
 
 
