@@ -21,13 +21,13 @@ public class Storage {
     }
 
     //Adds an item to the category
-    public boolean addItem(String n, double p, int q){
+    public boolean addItem(String n, double p, int q, boolean r){
         for(Item y:category){
             if(y.getName().equals(n)){
                 return false;
             }
         }
-        category.add(new Item(n,p,q));
+        category.add(new Item(n,p,q,r));
         
         return true;
     }

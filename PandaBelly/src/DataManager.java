@@ -29,10 +29,10 @@ public class DataManager {
                 storage.addCategory(new Storage(parts[0]));
                 dropdown.addItem(parts[0]);
             }
-            if (parts.length == 4) {
+            if (parts.length == 5) {
                 for (Storage s : storage.getMainStorage())
                     if (s.getCName().equals(parts[0]))
-                        s.addItem(parts[1], Double.parseDouble(parts[2]), Integer.parseInt(parts[3]));
+                        s.addItem(parts[1], Double.parseDouble(parts[2]), Integer.parseInt(parts[3]), Boolean.parseBoolean(parts[4]));
             }
         }
         scanner.close();
@@ -45,7 +45,7 @@ public class DataManager {
             for (Storage s : storage.getMainStorage()) {
                 if (s.getCategory().isEmpty()) writer.println(s.getCName());
                 for (Item item : s.getCategory()) {
-                    writer.println(s.getCName() + "," + item.getName() + "," + item.getPrice() + "," + item.getQuantity());
+                    writer.println(s.getCName() + "," + item.getName() + "," + item.getPrice() + "," + item.getQuantity() + "," + item.isRestockNeeded());
                 }
             }
             writer.close();

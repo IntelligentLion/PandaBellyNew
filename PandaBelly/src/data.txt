@@ -1,26 +1,26 @@
-None,Example,1.0,2
-VEX,Motor 11W,15.99,10
-VEX,Motor 5.5W,12.99,8
-VEX,Brain V5,249.99,3
-VEX,Controller V5,64.99,5
-VEX,Battery V5,39.99,12
-VEX,Omni Wheel 4in,14.99,20
-VEX,Traction Wheel 4in,9.99,15
-VEX,Gear 36T,3.99,25
-VEX,Gear 60T,4.99,18
-VEX,Shaft 12in,2.49,30
-VEX,C-Channel 25 Hole,6.99,22
-VEX,Standoff 2in,1.99,50
-VEX,Screw Pack,4.99,40
-VEX,Bearing Flat,2.99,35
-VEX,Pneumatic Cylinder,29.99,6
-Cooking,Wooden Spoon,4.99,15
-Cooking,Spatula,6.99,12
-Cooking,Chef Knife,24.99,8
-Cooking,Cutting Board,12.99,10
-Cooking,Mixing Bowl Set,18.99,7
-Cooking,Measuring Cups,8.99,14
-Cooking,Whisk,5.99,20
-Cooking,Tongs,7.99,16
-Cooking,Ladle,4.49,18
-Cooking,Rolling Pin,9.99,9
+None,Example,1.0,2,false
+VEX,Motor 11W,15.99,10,false
+VEX,Motor 5.5W,12.99,8,false
+VEX,Brain V5,249.99,3,false
+VEX,Controller V5,64.99,5,false
+VEX,Battery V5,39.99,12,false
+VEX,Omni Wheel 4in,14.99,20,false
+VEX,Traction Wheel 4in,9.99,15,false
+VEX,Gear 36T,3.99,25,false
+VEX,Gear 60T,4.99,18,false
+VEX,Shaft 12in,2.49,30,false
+VEX,C-Channel 25 Hole,6.99,22,false
+VEX,Standoff 2in,1.99,50,false
+VEX,Screw Pack,4.99,40,false
+VEX,Bearing Flat,2.99,35,false
+VEX,Pneumatic Cylinder,29.99,6,false
+Cooking,Wooden Spoon,4.99,15,false
+Cooking,Spatula,6.99,12,false
+Cooking,Chef Knife,24.99,8,false
+Cooking,Cutting Board,12.99,10,false
+Cooking,Mixing Bowl Set,18.99,7,false
+Cooking,Measuring Cups,8.99,14,false
+Cooking,Whisk,5.99,20,false
+Cooking,Tongs,7.99,16,false
+Cooking,Ladle,4.49,18,false
+Cooking,Rolling Pin,9.99,9,false

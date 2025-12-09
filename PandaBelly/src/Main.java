@@ -87,6 +87,15 @@ public class Main {
         DataManager.loadData(storage, dropdown);
         updateTableForSelectedCategory(dropdown, storage, model);
         
+        // Load restock items from storage (items marked with restockNeeded=true)
+        for(Storage storageUnit : storage.getMainStorage()) {
+            for(Item item : storageUnit.getCategory()) {
+                if(item.isRestockNeeded()) {
+                    restock.add(item);
+                }
+            }
+        }
+        
         JPanel panel = new JPanel();
         panel.add(dropdown);
         panel.setBounds(150,55,200,45);
@@ -375,7 +384,16 @@ public class Main {
                         }
                     }
                     //Runs if all checks are passed, adds the item to the selected category
-                    selectedStorage.addItem(nameField.getText(), Double.parseDouble(priceField.getText()), Integer.parseInt(quantityField.getText()));
+                    boolean restockFlag = false;
+                    if (quantityField.getText().equals("0")) {
+                        int restockChoice = JOptionPane.showConfirmDialog(null, "Quantity is 0. Mark item as needing restock?", "Restock Confirmation", JOptionPane.YES_NO_OPTION);
+                        restockFlag = (restockChoice == JOptionPane.YES_OPTION);
+                        if(restockFlag) {
+                            restock.add(new Item(nameField.getText(), Double.parseDouble(priceField.getText()), Integer.parseInt(quantityField.getText()), true));
+                        }
+                    }
+                    selectedStorage.addItem(nameField.getText(), Double.parseDouble(priceField.getText()), Integer.parseInt(quantityField.getText()), restockFlag);
+                    // persist and give feedback
                     DataManager.saveData(storage);
                     Sounds.playSuccess();
                     JOptionPane.showMessageDialog(null, "Item added successfully!");
@@ -602,7 +620,14 @@ public class Main {
                                     // Find the Item object by name and add to restock list
                                     for (Item item : selectedStorage.getCategory()) {
                                         if (item.getName().equalsIgnoreCase(newNameField.getText())) {
-                                            restock.add(item);
+                                            // mark item as needing restock
+                                            item.setRestockNeeded(true);
+                                            // avoid duplicate entries
+                                            boolean already = false;
+                                            for (Item r : restock) {
+                                                if (r.getName().equalsIgnoreCase(item.getName())) { already = true; break; }
+                                            }
+                                            if (!already) restock.add(item);
                                             break;
                                         }
                                     }
@@ -668,7 +693,8 @@ public class Main {
                 Sounds.playClick();
                 restockModel.setRowCount(0);
                 for(Item item : restock){
-                    String category = "Unknown";
+                    String category = null;
+                    // Find the category for this item
                     for(Storage storageUnit : storage.getMainStorage()) {
                         for(Item storageItem : storageUnit.getCategory()) {
                             if(storageItem.getName().equals(item.getName())) {
@@ -676,8 +702,12 @@ public class Main {
                                 break;
                             }
                         }
+                        if(category != null) break;
                     }
-                    restockModel.addRow(new Object[]{category, item.getName()});
+                    // Only display if the item still exists in storage
+                    if(category != null) {
+                        restockModel.addRow(new Object[]{category, item.getName()});
+                    }
                 }
                 restockFrame.setVisible(true);
             }
