@@ -138,7 +138,7 @@ public class Main {
 //Arthur: remove category button, the edges are a little off though.
         JButton removeCategoryButton = new JButton("Remove Category");
         JPanel removeButtonPanel = new JPanel();
-        removeButtonPanel.setBounds(700,50,180,50);
+        removeButtonPanel.setBounds(700,55,180,45);
         removeButtonPanel.add(removeCategoryButton);
 
         removeCategoryButton.addActionListener(new ActionListener() {
@@ -184,7 +184,7 @@ public class Main {
 
         JButton addcategory = new JButton("Add Category");
         JPanel addcategoryPanel = new JPanel();
-        addcategoryPanel.setBounds(350,50,200,50);
+        addcategoryPanel.setBounds(350,55,200,45);
         addcategoryPanel.add(addcategory);
 
 
@@ -208,7 +208,7 @@ public class Main {
 
         JButton modifyCategoryButton = new JButton("Modify Category");
         JPanel modifyCategoryPanel = new JPanel();
-        modifyCategoryPanel.setBounds(515, 50, 200, 50);
+        modifyCategoryPanel.setBounds(515, 55, 200, 45);
         modifyCategoryPanel.add(modifyCategoryButton);
 
         modifyCategoryButton.addActionListener(new ActionListener() {
@@ -280,18 +280,22 @@ public class Main {
             public void actionPerformed(ActionEvent e) {
                 Sounds.playClick();
                 if (CategoryField.getSelectedItem() == null) {
+                        Sounds.playError();
                         JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                         CategoryField.requestFocusInWindow();
                     }
                 else if (nameField.getText().isEmpty()) {
+                    Sounds.playError();
                     JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     nameField.requestFocusInWindow();
                 }
                 else if (priceField.getText().isEmpty()) {
+                    Sounds.playError();
                     JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     priceField.requestFocusInWindow();
                 }
                 else if (quantityField.getText().isEmpty()) {
+                    Sounds.playError();
                     JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     quantityField.requestFocusInWindow();
                 }
@@ -299,11 +303,13 @@ public class Main {
                 try {
                     Double.parseDouble(priceField.getText());
                 } catch (NumberFormatException ex) {
+                    Sounds.playError();
                     JOptionPane.showMessageDialog(null, "Enter valid price!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     priceField.requestFocusInWindow();
                     return;
                 }
                 if(Double.parseDouble(priceField.getText()) < 0){
+                    Sounds.playError();
                     JOptionPane.showMessageDialog(null, "Price cannot be negative!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     priceField.requestFocusInWindow();
                     return;
@@ -311,6 +317,7 @@ public class Main {
                 if(priceField.getText().contains(".")){
                     String[] parts = priceField.getText().split("\\.");
                     if(parts.length == 2 && parts[1].length() > 2){
+                        Sounds.playError();
                         JOptionPane.showMessageDialog(null, "Price can only have two decimal places!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                         priceField.requestFocusInWindow();
                         return;
@@ -319,17 +326,20 @@ public class Main {
                 try {
                     Integer.parseInt(quantityField.getText());
                 } catch (NumberFormatException ex) {
+                    Sounds.playError();
                     JOptionPane.showMessageDialog(null, "Enter valid quantity!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     quantityField.requestFocusInWindow();
                     return;
                 }
                 if(Integer.parseInt(quantityField.getText()) < 0){
+                    Sounds.playError();
                     JOptionPane.showMessageDialog(null, "Quantity cannot be negative!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     quantityField.requestFocusInWindow();
                     return;
                 }
                 
                 if (!storage.categoryExists((String) CategoryField.getSelectedItem())) {
+                    Sounds.playError();
                     JOptionPane.showMessageDialog(null, "Category does not exist!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     CategoryField.requestFocusInWindow();
                     return;
@@ -422,10 +432,12 @@ public class Main {
             public void actionPerformed(ActionEvent e) {
                 Sounds.playClick();
                 if (removeCategoryDropdown.getSelectedItem() == null) {
+                        Sounds.playError();
                         JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                         removeCategoryDropdown.requestFocusInWindow();
                     }
                 else if (removeItemField.getText().isEmpty()) {
+                    Sounds.playError();
                     JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     removeItemField.requestFocusInWindow();
                 }
@@ -511,22 +523,27 @@ public class Main {
             public void actionPerformed(ActionEvent e) {
                 Sounds.playClick();
                 if (modifyCategoryDropdown.getSelectedItem() == null) {
+                        Sounds.playError();
                         JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                         modifyCategoryDropdown.requestFocusInWindow();
                     }
                 else if (modifyItemField.getText().isEmpty()) {
+                    Sounds.playError();
                     JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     modifyItemField.requestFocusInWindow();
                 }
                 else if (newNameField.getText().isEmpty()) {
+                    Sounds.playError();
                     JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     newNameField.requestFocusInWindow();
                 }
                 else if (newPriceField.getText().isEmpty()) {
+                    Sounds.playError();
                     JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     newPriceField.requestFocusInWindow();
                 }
                 else if (newQuantityField.getText().isEmpty()) {
+                    Sounds.playError();
                     JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     newQuantityField.requestFocusInWindow();
                 }
@@ -596,6 +613,7 @@ public class Main {
         mainMenuButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
                 frame.add(addItemPanel);
                 frame.add(removeItemPanel);
                 frame.add(modifyItemPanel);
@@ -622,6 +640,7 @@ public class Main {
         returnToMenuButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
                 frame.remove(addItemPanel);
                 frame.remove(removeItemPanel);
                 frame.remove(modifyItemPanel);
