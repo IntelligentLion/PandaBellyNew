@@ -49,7 +49,6 @@ public class Main {
         String[] columnNames = {"Items", "Quantity", "Price"};
         ArrayList<Item> restock = new ArrayList<Item>();
         DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
-            @Override
             public boolean isCellEditable(int row, int column) {
                 return false; // Make cells non-editable
             }
@@ -152,7 +151,6 @@ public class Main {
         removeButtonPanel.add(removeCategoryButton);
 
         removeCategoryButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 Sounds.playClick();
                 // Create a dropdown with all categories except "None"
@@ -199,7 +197,6 @@ public class Main {
 
 
         addcategory.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 Sounds.playClick();
                 String newCategory = JOptionPane.showInputDialog(frame, "Enter new category name:");
@@ -222,7 +219,6 @@ public class Main {
         modifyCategoryPanel.add(modifyCategoryButton);
 
         modifyCategoryButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 Sounds.playClick();
                 String oldCategory = JOptionPane.showInputDialog(frame, "Enter the category name to modify:");
@@ -286,7 +282,6 @@ public class Main {
         JButton submitButton = new JButton("Submit");
         addItemFrame.add(submitButton);
         submitButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 Sounds.playClick();
                 if (CategoryField.getSelectedItem() == null) {
@@ -414,7 +409,6 @@ public class Main {
 
 
         addItemButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 Sounds.playClick();
                 // Refresh the category dropdown with current categories
@@ -447,7 +441,6 @@ public class Main {
         JButton submitRemoveItemButton = new JButton("Submit");
         removeItemFrame.add(submitRemoveItemButton);
         submitRemoveItemButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 Sounds.playClick();
                 if (removeCategoryDropdown.getSelectedItem() == null) {
@@ -492,7 +485,6 @@ public class Main {
         removeItemPanel.add(removeItemButton);
 
         removeItemButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 Sounds.playClick();
                 // Refresh the category dropdown with current categories
@@ -538,7 +530,6 @@ public class Main {
         JButton modifyItemSubmitButton = new JButton("Submit");
         modifyItemFrame.add(modifyItemSubmitButton);
         modifyItemSubmitButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 Sounds.playClick();
                 if (modifyCategoryDropdown.getSelectedItem() == null) {
@@ -656,7 +647,6 @@ public class Main {
         modifyItemPanel.add(modifyItemButton);
 
         modifyItemButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 Sounds.playClick();
                 // Refresh the category dropdown with current categories
@@ -674,7 +664,6 @@ public class Main {
         restockFrame.setSize(600, 400);
         String[] restockColumnNames = {"Category", "Item Name"};
         DefaultTableModel restockModel = new DefaultTableModel(restockColumnNames, 0) {
-            @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
@@ -737,7 +726,6 @@ public class Main {
         viewRestockPanel.setBounds(855, 600, 120, 50);
         viewRestockPanel.add(viewRestockButton);
         viewRestockButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 Sounds.playClick();
                 restockModel.setRowCount(0);
@@ -784,7 +772,6 @@ public class Main {
         JButton addRestockSubmitButton = new JButton("Submit");
         addToRestockFrame.add(addRestockSubmitButton);
         addToRestockButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 Sounds.playClick();
                 // Refresh the category dropdown with current categories
@@ -797,7 +784,6 @@ public class Main {
             }   
         });
         addRestockSubmitButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 Sounds.playClick();
                 if (addRestockCategoryDropdown.getSelectedItem() == null) {
@@ -869,7 +855,6 @@ public class Main {
         JButton removeRestockSubmitButton = new JButton("Submit");
         removeFromRestockFrame.add(removeRestockSubmitButton);
         removeItemFromRestockButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 Sounds.playClick();
                 // Refresh the category dropdown with current categories
@@ -882,7 +867,6 @@ public class Main {
             }   
         });
         removeRestockSubmitButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 Sounds.playClick();
                 if (removeRestockCategoryDropdown.getSelectedItem() == null) {
@@ -935,7 +919,7 @@ public class Main {
         frame.add(titleLabel);
         Image mainMenuPanda = new ImageIcon("PandaBelly/src/panda.png").getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
         JLabel mainMenuPandaLabel = new JLabel(new ImageIcon(mainMenuPanda));
-        mainMenuPandaLabel.setBounds(400, 350, 200, 200);
+        mainMenuPandaLabel.setBounds(400, 250, 200, 200);
         frame.add(mainMenuPandaLabel);
 
         JButton returnToMenuButton = new JButton("Back to Main Menu");
@@ -946,9 +930,9 @@ public class Main {
         mainMenuPanel.add(mainMenuButton);
         frame.add(mainMenuPanel); 
         mainMenuButton.addActionListener(new ActionListener(){
-            @Override
             public void actionPerformed(ActionEvent e) {
                 Sounds.playClick();
+                Sounds.stopMusic();
                 frame.add(addItemPanel);
                 frame.add(removeItemPanel);
                 frame.add(modifyItemPanel);
@@ -978,9 +962,9 @@ public class Main {
         returnToMenuPanel.setBounds(10, 10, 180, 50);
         returnToMenuPanel.add(returnToMenuButton);
         returnToMenuButton.addActionListener(new ActionListener(){
-            @Override
             public void actionPerformed(ActionEvent e) {
                 Sounds.playClick();
+                Sounds.playMusic("mainmenu.wav");
                 frame.remove(addItemPanel);
                 frame.remove(removeItemPanel);
                 frame.remove(modifyItemPanel);
@@ -1044,12 +1028,12 @@ public class Main {
         bigPanel.add(scrollPane, BorderLayout.CENTER);
 
         dropdown.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 Main.updateTableForSelectedCategory(dropdown, storage, model);
             }
         });
         
+        Sounds.playMusic("mainmenu.wav");
         frame.setVisible(true);
     }
     
