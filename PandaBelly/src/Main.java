@@ -12,8 +12,6 @@ import java.awt.BorderLayout;
 import java.awt.Image;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-
 import java.awt.GradientPaint;
 import java.awt.event.MouseEvent;
 import java.awt.Graphics;
@@ -23,92 +21,34 @@ import java.awt.geom.Point2D;
 import java.awt.RadialGradientPaint;
 import java.awt.event.MouseAdapter;
 import java.awt.Font;
-import javax.swing.table.TableColumn;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableRowSorter;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
-import java.text.NumberFormat;
-//import com.formdev.flatlaf.FlatLightLaf;
-//import com.formdev.flatlaf.FlatDarkLaf;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
-
 //all gui components inside Main class
 public class Main {
-
-    private static void styleButton(JButton button) {
-    try {
-        UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-        UIManager.put("defaultFont", new Font("SansSerif", Font.PLAIN, 13));
-    } catch (Exception e) {
-        e.printStackTrace(); // if Nimbus isn't available, it will just fall back
-    }
-
-    button.setFocusPainted(false);
-    button.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-    button.setContentAreaFilled(false);
-    button.setOpaque(true);
-    button.setBackground(new Color(0XEEEEEE));
-    button.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            button.setBackground(new Color(255, 100, 100));
-        }
-        @Override
-        public void mouseExited(MouseEvent e) {
-            button.setBackground(new Color(0xEEEEEE));
-        }
-    });
-
-    button.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-    }
 
     public static void main(String[] args) throws IOException {
         categoryStorage storage = new categoryStorage();
         String[] columnNames = {"Items", "Quantity", "Price"};
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
         JTable table = new JTable(model);
         table.setRowHeight(30);
 
-        table.setRowHeight(24);
-        table.setFillsViewportHeight(true);
-        table.setShowGrid(false);
-        table.setIntercellSpacing(new Dimension(0, 0));
-
-        // header styling
-        JTableHeader header = table.getTableHeader();
-        header.setFont(header.getFont().deriveFont(Font.BOLD, 14f));
-        header.setReorderingAllowed(false);
-
         UIManager.put("Label.font", new Font("Chaucer", Font.PLAIN, 25));
-        //UIManager.setLookAndFeel(new FlatLightLaf());
  
-
-        UIManager.put("Panel.background", new Color(0xF5F5F5));
-        UIManager.put("Table.background", Color.WHITE);
-        UIManager.put("Table.alternateRowColor", new Color(0xFAFAFA));
 
 
         //Ritvin's attempt to put a gif background
         JFrame frame = new JFrame("PandaBelly");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        frame.setLayout(new BorderLayout());
+        frame.setLayout(null);
         frame.setSize(1000,700);
         frame.setLocationRelativeTo(null); // Center the frame
         frame.setBackground(java.awt.Color.BLUE);
         frame.setIconImage(new ImageIcon("PandaBelly/src/panda.png").getImage());
-
+        
         // ryan: panda image in top-right corner 
         ImageIcon pandaIcon = new ImageIcon("PandaBelly/src/panda.png");
         Image scaledPanda = pandaIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
@@ -116,21 +56,6 @@ public class Main {
         pandaLabel.setBounds(890, 10, 50, 50);
         frame.add(pandaLabel);
         
-        JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBackground(new Color(0xF5F5F5));
-        topPanel.setBorder(new EmptyBorder(5, 10, 5, 10));
-        frame.add(topPanel, BorderLayout.NORTH);
-
-        JPanel titleBar = new JPanel(new BorderLayout());
-        titleBar.setOpaque(false);
-
-        JLabel titleLabel = new JLabel("PandaBelly Inventory System", SwingConstants.CENTER);
-        titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD, 30f));
-        titleBar.add(titleLabel, BorderLayout.CENTER);
-
-        titleBar.add(pandaLabel, BorderLayout.EAST);
-        topPanel.add(titleBar, BorderLayout.NORTH);
-
         String[] options = {};
         JComboBox<String> dropdown = new JComboBox<>(options);
         dropdown.setPreferredSize(new Dimension(200, 30));
@@ -146,7 +71,6 @@ public class Main {
 
         //these are the 3 lil pannels at the top
 
-        /* 
         JPanel itemPanel = new JPanel();
         itemPanel.setBorder(BorderFactory.createEtchedBorder());
         itemPanel.setBounds(150, 100, 700/3, 100);
@@ -176,44 +100,15 @@ public class Main {
         quantPanel.add(quantLabel1, BorderLayout.CENTER);
         quantPanel.setBackground(java.awt.Color.WHITE);
         //panels end, we got rid of the SKU idea btw
-        */
 
-
-        JPanel center = new JPanel(new BorderLayout());
-        center.setBorder(new EmptyBorder(10, 20, 20, 20));
-        frame.add(center, BorderLayout.CENTER);
-
-        JPanel headers = new JPanel(new GridLayout(1,3));
-        headers.setBounds(150, 100, 700, 40);
-        headers.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(0XCCCCCC)));
-        headers.setBackground(Color.WHITE);
-
-        Font headersFont = new Font("Chaucer", Font.BOLD, 160);
-
-        JLabel itemLabel = new JLabel("Items", SwingConstants.CENTER);
-        itemLabel.setFont(headersFont);
-        headers.add(itemLabel); 
-
-        JLabel quantLabel1 = new JLabel("Quantity", SwingConstants.CENTER);
-        quantLabel1.setFont(headersFont);
-        headers.add(quantLabel1);
-
-        JLabel priceLabel1 = new JLabel("Price", SwingConstants.CENTER);
-        priceLabel1.setFont(headersFont);
-        headers.add(priceLabel1);
-
-        center.add(headers, BorderLayout.NORTH);
-
-        JScrollPane scroll = new JScrollPane(table);
-        center.add(scroll, BorderLayout.CENTER);
 
         JPanel bigPanel = new JPanel();
-        bigPanel.setBounds(150, 120, 700, 530);
+        bigPanel.setBounds(150, 200, 700, 450);
         frame.add(bigPanel);
         bigPanel.setBorder(BorderFactory.createEtchedBorder());
         bigPanel.setOpaque(false); // show animated background behind the table
          
-         //itemPanel.setBackground(java.awt.Color.WHITE);
+         itemPanel.setBackground(java.awt.Color.WHITE);
         // make button-holder panels transparent so the gradient is visible
         // (repeat for other small panels if desired)
         
@@ -224,49 +119,42 @@ public class Main {
         removeButtonPanel.setBounds(700,50,180,50);
         removeButtonPanel.add(removeCategoryButton);
         frame.add(removeButtonPanel);
-        /* 
-        removeCategoryButton.setContentAreaFilled(false);
-        removeCategoryButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                removeCategoryButton.setContentAreaFilled(true);
-                removeCategoryButton.setBackground(new Color(255, 100, 100));
-            }
-
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                removeCategoryButton.setContentAreaFilled(false);
-            }
-        });
-        */
         removeCategoryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String selectedCategory = JOptionPane.showInputDialog(frame, "Enter category name to remove:");
-                if (selectedCategory == null || selectedCategory.trim().isEmpty()) {
-                    return;
-                }
-                String cat = selectedCategory.trim();
-                if (cat.equals("None")) {
-                    Sounds.playError();
-                    JOptionPane.showMessageDialog(frame, "Cannot remove 'None' category.");
-                    return;
-                }
-                boolean exists = false;
+                Sounds.playClick();
+                // Create a dropdown with all categories except "None"
+                JComboBox<String> removeCatDropdown = new JComboBox<>();
                 for (int i = 0; i < dropdown.getItemCount(); i++) {
-                    if (dropdown.getItemAt(i).equals(cat)) {
-                        exists = true;
-                        break;
+                    String cat = dropdown.getItemAt(i);
+                    if (!cat.equals("None")) {
+                        removeCatDropdown.addItem(cat);
                     }
                 }
-                if (!exists) {
+                
+                if (removeCatDropdown.getItemCount() == 0) {
                     Sounds.playError();
-                    JOptionPane.showMessageDialog(frame, "Category does not exist!", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "No categories to remove!");
                     return;
                 }
-                dropdown.removeItem(cat);
-                storage.removeCategory(cat);
-                DataManager.saveData(storage);
-                Sounds.playSuccess();
-                Main.updateTableForSelectedCategory(dropdown, storage, model);
+                
+                String selectedCategory = (String) JOptionPane.showInputDialog(frame, "Select category to remove:", "Remove Category", JOptionPane.QUESTION_MESSAGE, null, removeCatDropdown.getItemCount() > 0 ? getItems(removeCatDropdown) : null, removeCatDropdown.getItemAt(0));
+                
+                if (selectedCategory != null) {
+                    dropdown.removeItem(selectedCategory);
+                    storage.removeCategory(selectedCategory);
+                    DataManager.saveData(storage);
+                    Sounds.playSuccess();
+                    Main.updateTableForSelectedCategory(dropdown, storage, model);
+                }
+            }
+            
+            private Object[] getItems(JComboBox<String> combo) {
+                Object[] items = new Object[combo.getItemCount()];
+                for (int i = 0; i < combo.getItemCount(); i++) {
+                    items[i] = combo.getItemAt(i);
+                }
+                return items;
             }
         });
 
@@ -278,6 +166,7 @@ public class Main {
         addcategory.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
                 String newCategory = JOptionPane.showInputDialog(frame, "Enter new category name:");
                 if (newCategory != null && !newCategory.trim().isEmpty()) {
                     String cat = newCategory.trim();
@@ -292,39 +181,15 @@ public class Main {
             }
         });
 
-        addcategory.setContentAreaFilled(false);
-        addcategory.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                addcategory.setContentAreaFilled(true);
-                addcategory.setBackground(new Color(255, 100, 100));
-            }
-
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                addcategory.setContentAreaFilled(false);
-            }
-        });
-
         JButton modifyCategoryButton = new JButton("Modify Category");
         JPanel modifyCategoryPanel = new JPanel();
         modifyCategoryPanel.setBounds(515, 50, 200, 50);
         modifyCategoryPanel.add(modifyCategoryButton);
         frame.add(modifyCategoryPanel);
-        /* 
-        modifyCategoryButton.setContentAreaFilled(false);
-        modifyCategoryButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                modifyCategoryButton.setContentAreaFilled(true);
-                modifyCategoryButton.setBackground(new Color(255, 100, 100));
-            }
-
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                modifyCategoryButton.setContentAreaFilled(false);
-            }
-        });
-        */
         modifyCategoryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
                 String oldCategory = JOptionPane.showInputDialog(frame, "Enter the category name to modify:");
                 if (oldCategory != null && !oldCategory.trim().isEmpty()) {
                     String newCategory = JOptionPane.showInputDialog(frame, "Enter the new category name:");
@@ -388,6 +253,7 @@ public class Main {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
                 if (CategoryField.getSelectedItem() == null) {
                         JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                         CategoryField.requestFocusInWindow();
@@ -485,19 +351,6 @@ public class Main {
                 }
             }
         });
-        //Changes the button color on hover
-        submitButton.setContentAreaFilled(false);
-        submitButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                submitButton.setContentAreaFilled(true);
-                submitButton.setBackground(new Color(255, 100, 100));
-            }
-
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                submitButton.setContentAreaFilled(false);
-            }
-        });
-
 
 //Arthur:Add Item button and its panel
         JButton addItemButton = new JButton("Add Item");
@@ -506,6 +359,7 @@ public class Main {
         addItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
                 // Refresh the category dropdown with current categories
                 CategoryField.removeAllItems();
                 for (int i = 0; i < dropdown.getItemCount(); i++) {
@@ -513,18 +367,6 @@ public class Main {
                 }
                 addItemFrame.setVisible(true);
             }   
-        });
-   
-        addItemButton.setContentAreaFilled(false);
-        addItemButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                addItemButton.setContentAreaFilled(true);
-                addItemButton.setBackground(new Color(255, 100, 100));
-            }
-
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                addItemButton.setContentAreaFilled(false);
-            }
         });
 //Arthur: Remove Item button, frame and its components
         JButton removeItemButton = new JButton("Remove Item");
@@ -550,6 +392,7 @@ public class Main {
         submitRemoveItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
                 if (removeCategoryDropdown.getSelectedItem() == null) {
                         JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                         removeCategoryDropdown.requestFocusInWindow();
@@ -589,6 +432,7 @@ public class Main {
         removeItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
                 // Refresh the category dropdown with current categories
                 removeCategoryDropdown.removeAllItems();
                 for (int i = 0; i < dropdown.getItemCount(); i++) {
@@ -596,17 +440,6 @@ public class Main {
                 }
                 removeItemFrame.setVisible(true);
             }   
-        });
-        removeItemButton.setContentAreaFilled(false);
-        removeItemButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                removeItemButton.setContentAreaFilled(true);
-                removeItemButton.setBackground(new Color(255, 100, 100));
-            }
-
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                removeItemButton.setContentAreaFilled(false);
-            }
         });
 
         JButton modifyItemButton = new JButton("Modify Item");
@@ -645,6 +478,7 @@ public class Main {
         modifyItemSubmitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
                 if (modifyCategoryDropdown.getSelectedItem() == null) {
                         JOptionPane.showMessageDialog(null, "This field is required!", "Validation Error", JOptionPane.ERROR_MESSAGE);
                         modifyCategoryDropdown.requestFocusInWindow();
@@ -702,6 +536,7 @@ public class Main {
         modifyItemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Sounds.playClick();
                 // Refresh the category dropdown with current categories
                 modifyCategoryDropdown.removeAllItems();
                 for (int i = 0; i < dropdown.getItemCount(); i++) {
@@ -780,7 +615,7 @@ public class Main {
 
         tools.add(Box.createHorizontalGlue());
 
-
+       
 
 
 

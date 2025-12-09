@@ -11,7 +11,7 @@ import javax.swing.JComboBox;
 
 
 public class DataManager {
-    private static final String DATA_FILE = "data.txt";
+    private static final String DATA_FILE = "PandaBelly/src/data.txt";
 
     // Load: each line is category,name,price,quantity
     public static void loadData(categoryStorage storage, JComboBox<String> dropdown) throws IOException {
