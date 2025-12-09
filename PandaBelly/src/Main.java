@@ -76,7 +76,6 @@ public class Main {
         Image scaledPanda = pandaIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         JLabel pandaLabel = new JLabel(new ImageIcon(scaledPanda));
         pandaLabel.setBounds(890, 55, 50, 50);
-        frame.add(pandaLabel);
         
 
 
@@ -915,6 +914,7 @@ public class Main {
                 frame.add(viewRestockPanel);
                 frame.add(addToRestockPanel);
                 frame.add(removeItemFromRestockPanel);
+                frame.add(pandaLabel);
                 mainMenuPanel.setVisible(false);
                 titleLabel.setVisible(false);
                 mainMenuPandaLabel.setVisible(false);
@@ -945,6 +945,7 @@ public class Main {
                 frame.remove(viewRestockPanel);
                 frame.remove(addToRestockPanel);
                 frame.remove(removeItemFromRestockPanel);
+                frame.remove(pandaLabel);
                 mainMenuPanel.setVisible(true);
                 titleLabel.setVisible(true);
                 mainMenuPandaLabel.setVisible(true);
