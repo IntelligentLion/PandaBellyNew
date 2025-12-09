@@ -686,7 +686,7 @@ public class Main {
         // Analytics Button
         JButton viewAnalyticsButton = new JButton("Analytics");
         JPanel viewAnalyticsPanel = new JPanel();
-        viewAnalyticsPanel.setBounds(855, 540, 120, 50);
+        viewAnalyticsPanel.setBounds(855, 400, 120, 50);
         viewAnalyticsPanel.add(viewAnalyticsButton);
         viewAnalyticsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -848,7 +848,7 @@ public class Main {
 
         JButton removeItemFromRestockButton = new JButton("<html>Remove from<br>Restock</html>");
         JPanel removeItemFromRestockPanel = new JPanel();   
-        removeItemFromRestockPanel.setBounds(825, 520, 180, 100);
+        removeItemFromRestockPanel.setBounds(825, 525, 180, 100);
         removeItemFromRestockPanel.add(removeItemFromRestockButton);
         JFrame removeFromRestockFrame = new JFrame("Remove from Restock");
         removeFromRestockFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
