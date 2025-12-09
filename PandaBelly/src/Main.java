@@ -98,7 +98,7 @@ public class Main {
         JFrame frame = new JFrame("PandaBelly");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        frame.setLayout(null);
+        frame.setLayout(new BorderLayout());
         frame.setSize(1000,700);
         frame.setLocationRelativeTo(null); // Center the frame
         frame.setBackground(java.awt.Color.BLUE);
@@ -117,6 +117,21 @@ public class Main {
         pandaLabel.setBounds(890, 10, 50, 50);
         frame.add(pandaLabel);
         
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setBackground(new Color(0xF5F5F5));
+        topPanel.setBorder(new EmptyBorder(5, 10, 5, 10));
+        frame.add(topPanel, BorderLayout.NORTH);
+
+        JPanel titleBar = new JPanel(new BorderLayout());
+        titleBar.setOpaque(false);
+
+        JLabel titleLabel = new JLabel("PandaBelly Inventory System", SwingConstants.CENTER);
+        titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD, 30f));
+        titleBar.add(titleLabel, BorderLayout.CENTER);
+
+        titleBar.add(pandaLabel, BorderLayout.EAST);
+        topPanel.add(titleBar, BorderLayout.NORTH);
+
         String[] options = {};
         JComboBox<String> dropdown = new JComboBox<>(options);
         dropdown.setPreferredSize(new Dimension(200, 30));
@@ -164,6 +179,11 @@ public class Main {
         //panels end, we got rid of the SKU idea btw
         */
 
+
+        JPanel center = new JPanel(new BorderLayout());
+        center.setBorder(new EmptyBorder(10, 20, 20, 20));
+        frame.add(center, BorderLayout.CENTER);
+
         JPanel headers = new JPanel(new GridLayout(1,3));
         headers.setBounds(150, 100, 700, 40);
         headers.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(0XCCCCCC)));
@@ -182,6 +202,11 @@ public class Main {
         JLabel priceLabel1 = new JLabel("Price", SwingConstants.CENTER);
         priceLabel1.setFont(headersFont);
         headers.add(priceLabel1);
+
+        center.add(headers, BorderLayout.NORTH);
+
+        JScrollPane scroll = new JScrollPane(table);
+        center.add(scroll, BorderLayout.CENTER);
 
         JPanel bigPanel = new JPanel();
         bigPanel.setBounds(150, 120, 700, 530);
@@ -724,9 +749,11 @@ public class Main {
 
         JToolBar tools = new JToolBar();
         tools.setFloatable(false);
-        tools.setBorder(new EmptyBorder(8, 12, 8, 12));
+        tools.setOpaque(false);
+        tools.setBorder(new EmptyBorder(8, 0, 0, 0));
         tools.setBackground(new Color(0XF5F5F5));
         tools.setLayout(new BoxLayout(tools, BoxLayout.X_AXIS));
+        topPanel.add(tools, BorderLayout.SOUTH);
 
         tools.setBounds(0, 0, frame.getWidth(), 70);
         frame.add(tools);
@@ -765,6 +792,8 @@ public class Main {
         tools.add(modifyCategoryButton);
         tools.add(Box.createHorizontalStrut(10));
         tools.add(removeCategoryButton);
+
+        tools.add(Box.createHorizontalGlue());
 
 
 
