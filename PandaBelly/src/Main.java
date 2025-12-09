@@ -236,19 +236,32 @@ public class Main {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedCategory = JOptionPane.showInputDialog(frame, "Enter category name to remove:");
-                if(selectedCategory.equals("None")){
+                if (selectedCategory == null || selectedCategory.trim().isEmpty()) {
+                    return;
+                }
+                String cat = selectedCategory.trim();
+                if (cat.equals("None")) {
                     Sounds.playError();
                     JOptionPane.showMessageDialog(frame, "Cannot remove 'None' category.");
                     return;
-                    // Exception handling
                 }
-                if (selectedCategory != null && !selectedCategory.trim().isEmpty()) {
-                    dropdown.removeItem(selectedCategory.trim());
-                    storage.removeCategory(selectedCategory.trim());
-                    DataManager.saveData(storage);
-                    Sounds.playSuccess();
-                    Main.updateTableForSelectedCategory(dropdown, storage, model);
+                boolean exists = false;
+                for (int i = 0; i < dropdown.getItemCount(); i++) {
+                    if (dropdown.getItemAt(i).equals(cat)) {
+                        exists = true;
+                        break;
+                    }
                 }
+                if (!exists) {
+                    Sounds.playError();
+                    JOptionPane.showMessageDialog(frame, "Category does not exist!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                dropdown.removeItem(cat);
+                storage.removeCategory(cat);
+                DataManager.saveData(storage);
+                Sounds.playSuccess();
+                Main.updateTableForSelectedCategory(dropdown, storage, model);
             }
         });
 
