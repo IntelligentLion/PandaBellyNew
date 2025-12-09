@@ -603,11 +603,18 @@ public class Main {
                 modifyItemFrame.setVisible(true);
             }   
         });
-
+        JLabel titleLabel = new JLabel("Welcome to PandaBelly!", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Chaucer", Font.BOLD, 36));
+        titleLabel.setBounds(250, 150, 500, 50);
+        frame.add(titleLabel);
+        Image mainMenuPanda = new ImageIcon("PandaBelly/src/panda.png").getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+        JLabel mainMenuPandaLabel = new JLabel(new ImageIcon(mainMenuPanda));
+        mainMenuPandaLabel.setBounds(400, 250, 200, 200);
+        frame.add(mainMenuPandaLabel);
 
         JButton mainMenuButton = new JButton("Enter PandaBelly");
         JPanel mainMenuPanel = new JPanel();
-        mainMenuPanel.setBounds(400, 300, 200, 50);
+        mainMenuPanel.setBounds(400, 550, 200, 50);
         mainMenuPanel.add(mainMenuButton);
         frame.add(mainMenuPanel); 
         mainMenuButton.addActionListener(new ActionListener(){
@@ -625,6 +632,8 @@ public class Main {
                 frame.add(quantPanel);
                 frame.add(bigPanel);
                 mainMenuPanel.setVisible(false);
+                titleLabel.setVisible(false);
+                mainMenuPandaLabel.setVisible(false);
                 frame.repaint();
             }
         });
