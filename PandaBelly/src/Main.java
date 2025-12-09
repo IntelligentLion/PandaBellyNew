@@ -71,7 +71,12 @@ public class Main {
     public static void main(String[] args) throws IOException {
         categoryStorage storage = new categoryStorage();
         String[] columnNames = {"Items", "Quantity", "Price"};
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         JTable table = new JTable(model);
         table.setRowHeight(30);
 
