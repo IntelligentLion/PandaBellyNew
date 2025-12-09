@@ -604,17 +604,6 @@ public class Main {
             }   
         });
 
-        modifyItemButton.setContentAreaFilled(false);
-        modifyItemButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                modifyItemButton.setContentAreaFilled(true);
-                modifyItemButton.setBackground(new Color(255, 100, 100));
-            }
-
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                modifyItemButton.setContentAreaFilled(false);
-            }
-        });
 
         JButton mainMenuButton = new JButton("Enter PandaBelly");
         mainMenuButton.setBounds(400, 300, 200, 50);
