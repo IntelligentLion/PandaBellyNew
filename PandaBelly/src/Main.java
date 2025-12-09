@@ -40,33 +40,7 @@ public class Main {
 
 
     private static void styleButton(JButton button) {
-
-    try {
-        UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-        UIManager.put("defaultFont", new Font("SansSerif", Font.PLAIN, 13));
-    } catch (Exception e) {
-        e.printStackTrace(); // if Nimbus isn't available, it will just fall back
-    }
-
-
-    button.setFocusPainted(false);
-    button.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-    button.setContentAreaFilled(false);
-    button.setOpaque(true);
-    button.setBackground(new Color(0xADD8E6)); // Light blue color
-    button.setForeground(Color.BLACK);
-    button.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            button.setBackground(new Color(255, 100, 100));
-        }
-        @Override
-        public void mouseExited(MouseEvent e) {
-            button.setBackground(new Color(0xADD8E6));
-        }
-    });
-
-    button.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        button.setBackground(new Color(0xADD8E6)); // Light blue color
     }
 
     public static void main(String[] args) throws IOException {
@@ -106,14 +80,14 @@ public class Main {
 
         String[] options = {};
         JComboBox<String> dropdown = new JComboBox<>(options);
-        dropdown.setPreferredSize(new Dimension(200, 30));
+        dropdown.setPreferredSize(new Dimension(180, 30));
         
         DataManager.loadData(storage, dropdown);
         updateTableForSelectedCategory(dropdown, storage, model);
         
         JPanel panel = new JPanel();
         panel.add(dropdown);
-        panel.setBounds(175,50,200,50);
+        panel.setBounds(150,55,200,45);
 
         panel.setOpaque(true);
 
